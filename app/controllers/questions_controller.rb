@@ -1,14 +1,18 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_question, only: %i[show edit update destroy]
 
   def index
     @questions = Question.all
   end
 
   def show
+    @answer = @question.answers.build
+    @answers = @question.answers
   end
 
   def new
+    @question = Question.new
   end
 
   def create
@@ -24,7 +28,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if question.update(question_params)
+    if @question.update(question_params)
       redirect_to @question
     else
       render :edit
@@ -32,16 +36,14 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question.destroy
+    @question.destroy
     redirect_to questions_path
   end
 
   private
 
-  helper_method :question
-
-  def question
-    @question ||= params[:id] ? Question.find(params[:id]) : Question.new
+  def set_question
+    @question = Question.find(params[:id])
   end
 
   def question_params

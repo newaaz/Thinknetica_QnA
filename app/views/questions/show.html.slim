@@ -1,3 +1,7 @@
-h1= question.title
+h1= @question.title
 
-p= question.body
+p= @question.body
+
+= render partial: 'answers/answer', collection: @answers
+
+= render 'answers/form'

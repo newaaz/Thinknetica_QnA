@@ -1,19 +1,25 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, except: [:show]
+  before_action :set_question
+  
   def create
-    @answer = question.answers.build(answer_params)
+    @answer = @question.answers.build(answer_params)
     if @answer.save
-      redirect_to @answer.question
+      redirect_to question_path(@answer.question), notice: "Your answer successfully added"
     else
+      @answers = @question.answers
       render 'questions/show'
     end
   end
 
   private
 
-  helper_method :question
+  def set_question
+    @question = Question.find(params[:question_id])
+  end
 
-  def question
-    @question ||= Question.find(params[:question_id])
+  def set_answer
+    @answer = @question.answers.find(params[:id])
   end
 
   def answer_params

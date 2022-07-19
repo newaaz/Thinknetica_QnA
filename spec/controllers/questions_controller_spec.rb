@@ -98,9 +98,10 @@ RSpec.describe QuestionsController, type: :controller do
       before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
 
       it 'does not change question' do
+        old_title = question.title
         question.reload
 
-        expect(question.title).to eq 'MyString'
+        expect(question.title).to eq old_title
         expect(question.body).to eq 'MyText'
       end
 
@@ -112,7 +113,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     before { login(user) }
-    
+
     let!(:question) { create(:question) }
 
     it 'deletes the question' do

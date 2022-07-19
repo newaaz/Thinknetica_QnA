@@ -16,7 +16,7 @@ feature 'User can create question', %q{
       click_on 'Ask question'
     end
   
-    scenario 'create a question' do
+    scenario 'Create a question' do
       fill_in 'Title', with: 'Question Title'
       fill_in 'Body', with: 'Question body'
       click_on 'Ask'
@@ -26,7 +26,7 @@ feature 'User can create question', %q{
       expect(page).to have_content 'Question body'
     end
   
-    scenario 'create a question with errors' do
+    scenario 'Create a question with errors' do
       click_on 'Ask'
   
       expect(page).to have_content "Title can't be blank"
