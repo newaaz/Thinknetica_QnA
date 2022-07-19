@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.build(answer_params)
     if @answer.save
-      redirect_to question_path(@answer.question), notice: "Your answer successfully added"
+      redirect_to question_path(params[:question_id]), notice: "Your answer successfully added"
     else
       @answers = @question.answers
       render 'questions/show'

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :answer do
-    body { "MyText" }
-    question { nil }
+    association :question
+    body { "Correct answer - you need update gem" }    
 
     trait :invalid do
       body { nil }
