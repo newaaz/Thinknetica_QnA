@@ -1,9 +1,9 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
-  before_action :set_question
+  before_action :authenticate_user!
+  before_action :set_question, only: %i[create]
   
   def create
-    @answer = @question.answers.build(answer_params)
+    @answer = @question.answers.build(answer_params.merge(author: current_user))
     if @answer.save
       redirect_to question_path(params[:question_id]), notice: "Your answer successfully added"
     else
@@ -16,10 +16,6 @@ class AnswersController < ApplicationController
 
   def set_question
     @question = Question.find(params[:question_id])
-  end
-
-  def set_answer
-    @answer = @question.answers.find(params[:id])
   end
 
   def answer_params

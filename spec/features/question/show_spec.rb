@@ -10,12 +10,12 @@ feature 'User can view question and answers to it', %q{
   given(:question) { create(:question) }
   given!(:answers) { create_list(:answer, 3, question: question) }
 
-  scenario 'Authenticated user view list of all questions' do
+  scenario 'Authenticated user view question and answers to it' do
     sign_in(user)
     check_question_with_answers
   end
 
-  scenario 'Unauthenticated user view list of all questions' do
+  scenario 'Unauthenticated user view question and answers to it' do
     check_question_with_answers
   end
 
