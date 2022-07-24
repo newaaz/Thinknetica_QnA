@@ -2,14 +2,14 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: %i[create]
   before_action :set_answer, only: :destroy
-  
+
   def create
-    @answer = @question.answers.build(answer_params.merge(author: current_user))
+    @answer = Answer.new(answer_params.merge(author: current_user, question: @question))
     if @answer.save
       redirect_to question_path(params[:question_id]), notice: "Your answer successfully added"
     else
       @answers = @question.answers
-      render 'questions/show'
+      render 'questions/show'    
     end
   end
 
