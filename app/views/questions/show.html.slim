@@ -1,0 +1,10 @@
+h1= @question.title
+
+p= @question.body
+
+= render partial: 'answers/answer', collection: @answers, as: :answer
+
+= render 'answers/form'
+
+- if current_user&.author?(@question)
+  = link_to 'Delete this question', question_path(@question), method: :delete

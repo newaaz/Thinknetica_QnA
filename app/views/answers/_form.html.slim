@@ -1,0 +1,8 @@
+h3 Answer this question
+
+= render 'shared/errors', resource: @answer
+
+= form_with model: [@question, @answer] do |f|
+  = f.label :body
+  = f.text_area :body
+  = f.submit 'Add answer'
