@@ -9,7 +9,7 @@ feature 'User can answer the question', %q{
   given!(:user) { create(:user) }
   given!(:question) { create(:question) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     background do
       sign_in(user)
       visit question_path question
@@ -19,8 +19,10 @@ feature 'User can answer the question', %q{
       fill_in 'Body', with: 'Correct answer - you need update gem'
       click_on 'Add answer'
   
-      expect(page).to have_content 'Your answer successfully added'
-      expect(page).to have_content 'Correct answer - you need update gem'
+      expect(current_path).to eq question_path question
+      within '.answers' do
+        expect(page).to have_content 'Correct answer - you need update gem'
+      end      
     end
   
     scenario 'answers the question with errors' do
