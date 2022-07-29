@@ -9,3 +9,16 @@ p= @question.body
 
 - if current_user&.author?(@question)
   = link_to 'Delete this question', question_path(@question), method: :delete
+
+
+javascript:
+  $(document).on('turbolinks:load', function(){
+    $('.answers').on('click', '.edit-answer-link', function(e) {
+      e.preventDefault()
+      $(this).hide()
+      const answerId = $(this).data('answerId')
+      $('form#edit-answer-' + answerId).removeClass('hidden')
+    })
+  })
+
+

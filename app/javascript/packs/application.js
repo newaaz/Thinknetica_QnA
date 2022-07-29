@@ -8,8 +8,9 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 
-require('jquery')
-
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+require('jquery')
+require('utitilities/show_answers_form')
