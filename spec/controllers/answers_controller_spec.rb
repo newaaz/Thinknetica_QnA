@@ -67,6 +67,15 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end    
     end
+
+    context 'with invalid author' do
+      it 'not changes answer attributes' do
+        login(user)
+        expect do
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        end.to_not change(answer, :body)
+      end
+    end
   end
 
   describe 'DELETE #destroy' do

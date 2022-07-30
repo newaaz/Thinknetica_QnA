@@ -1,6 +1,5 @@
-$('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
-
-<% unless @answer.errors.present? %>
-  $('.answers').html('<%= j render @question.answers %>');
+<% if @answer.errors.present? %>
+  $('#<%= dom_id(@answer) %>').prepend('<%= render 'shared/errors', resource: @answer %>')
+<% else %>
+  $('#<%= dom_id(@answer) %>').html('<%= j render partial: 'answers/answer', locals: { answer: @answer } %>')
 <% end %>
-
