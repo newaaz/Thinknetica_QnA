@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:author)    { create(:user) }
   let(:user)      { create(:user) }
-  let(:question)  { create(:question) }
+  let(:question)  { create(:question, author: author) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
@@ -50,7 +50,7 @@ RSpec.describe QuestionsController, type: :controller do
     before { login(author) }
 
     context 'with valid attributes' do
-      it 'saves a new question in the DB' do  
+      it 'saves a new question in the DB' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
 
@@ -77,26 +77,26 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
         expect(assigns(:question)).to eq question
       end
 
       it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }, format: :js
         question.reload
 
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body'
       end
 
-      it 'redirect to updated question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(response).to redirect_to question
+      it 'render update view' do
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
+        expect(response).to render_template :update
       end
     end
 
     context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
+      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
 
       it 'does not change question' do
         old_title = question.title
@@ -106,8 +106,20 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'MyText'
       end
 
-      it 're-render edit' do
-        expect(response).to render_template :edit
+      it 'render update view' do
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with invalid author' do
+      before { login(user) }
+      
+      it 'not changes question attributes' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }, format: :js
+        question.reload
+
+        expect(question.title).to_not eq 'new title'
+        expect(question.body).to_not eq 'new body'
       end
     end
   end

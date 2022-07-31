@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:user) { create(:user) }
+  let!(:user) { create(:user) }
   let(:author) { create(:user) }
   let(:question) { create(:question) }
   let!(:answer) { create(:answer, question: question, author: author) }
@@ -69,11 +69,12 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid author' do
+      before { login(user) }
+
       it 'not changes answer attributes' do
-        login(user)
-        expect do
-          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
-        end.to_not change(answer, :body)
+        patch :update, params: { id: answer, answer: { body: "new edited answer" } }, format: :js
+        answer.reload
+        expect(answer.body).to_not eq "new edited answer"
       end
     end
   end

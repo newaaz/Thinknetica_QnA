@@ -1,14 +1,11 @@
-h1= @question.title
-
-p= @question.body
+= render 'questions/question_show', question: @question
 
 .answers
   = render partial: 'answers/answer', collection: @answers, as: :answer
 
 = render 'answers/form'
 
-- if current_user&.author?(@question)
-  = link_to 'Delete this question', question_path(@question), method: :delete
+
 
 
 javascript:
@@ -18,6 +15,12 @@ javascript:
       $(this).hide()
       const answerId = $(this).data('answerId')
       $('form#edit-answer-' + answerId).removeClass('hidden')
+    })
+
+    $('.question').on('click', '.edit-question-link', function(e) {
+      e.preventDefault()
+      $(this).hide()
+      $('form#edit-question').removeClass('hidden')
     })
   })
 
