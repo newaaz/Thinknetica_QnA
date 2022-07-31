@@ -84,15 +84,21 @@ RSpec.describe AnswersController, type: :controller do
       before { login(author) } 
 
       it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
     end
 
     context 'invalid author' do
       before { login(user) } 
 
-      it 'deletes the question' do
-        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+      it 'deletes the answer' do
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
+      end
+    end
+
+    context 'Unauthenticated user' do
+      it 'deletes the answer' do
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
     end
   end

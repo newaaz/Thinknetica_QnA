@@ -11,12 +11,11 @@ feature 'Only author can delete his answer', %q{
   given!(:answer)    { create(:answer, author: author, question: question) }
   given!(:user)      { create(:user) }
 
-  scenario 'Authenticated user tries to delete his answer' do
+  scenario 'Authenticated user tries to delete his answer', js: true do
     sign_in(author)
     visit question_path question
     click_on 'Delete answer'
 
-    expect(page).to have_content 'Answer was deleted'
     expect(page).to_not have_content answer.body
   end
 

@@ -12,14 +12,8 @@ class AnswersController < ApplicationController
     @question = @answer.question
   end
 
-  def destroy
-    if current_user.author?(@answer)
-      @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Answer was deleted'
-    else
-      flash[:alert] = 'This is not your answer'
-      redirect_back(fallback_location: root_path)      
-    end
+  def destroy    
+    @answer.destroy if current_user.author?(@answer)  
   end
 
   private
