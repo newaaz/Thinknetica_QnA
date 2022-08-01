@@ -1,25 +1,11 @@
 = render 'questions/question_show', question: @question
 
+.best-answer  
+  - if @best_answer.present?
+    h3 BEST ANSWER
+    = @best_answer.body
+
 .answers
   = render partial: 'answers/answer', collection: @answers, as: :answer
 
 = render 'answers/form'
-
-
-javascript:
-  $(document).on('turbolinks:load', function(){
-    $('.answers').on('click', '.edit-answer-link', function(e) {
-      e.preventDefault()
-      $(this).hide()
-      const answerId = $(this).data('answerId')
-      $('form#edit-answer-' + answerId).removeClass('hidden')
-    })
-
-    $('.question').on('click', '.edit-question-link', function(e) {
-      e.preventDefault()
-      $(this).hide()
-      $('form#edit-question').removeClass('hidden')
-    })
-  })
-
-

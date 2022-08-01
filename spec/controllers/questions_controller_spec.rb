@@ -4,6 +4,7 @@ RSpec.describe QuestionsController, type: :controller do
   let(:author)    { create(:user) }
   let(:user)      { create(:user) }
   let(:question)  { create(:question, author: author) }
+  let(:answer)    { create(:answer, question: question) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
@@ -122,6 +123,34 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to_not eq 'new body'
       end
     end
+  end
+
+  describe 'PATCH #set_best_answer' do
+    context 'sets best answer to their question (valid author)' do    
+      it 'set best answer for question' do
+        login author
+        patch :set_best_answer, params: { id: question, best_answer_id: answer.id }, format: :js
+        question.reload
+        expect(question.best_answer).to eq answer  
+      end
+    end
+
+    context 'sets best answer to other user question (invalid author)' do
+      it 'do not set best answer for question' do
+        login user
+        patch :set_best_answer, params: { id: question, best_answer_id: answer.id }, format: :js
+        question.reload
+        expect(question.best_answer).to_not eq answer  
+      end
+    end
+
+    context 'Unauthenticated user tries sets best answer to question (invalid author)' do
+      it 'do not set best answer for question' do
+        patch :set_best_answer, params: { id: question, best_answer_id: answer.id }, format: :js
+        question.reload
+        expect(question.best_answer).to_not eq answer  
+      end
+    end    
   end
 
   describe 'DELETE #destroy' do

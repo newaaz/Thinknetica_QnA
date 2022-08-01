@@ -1,6 +1,12 @@
 = content_tag(:div, class: "answer", id: dom_id(answer))
 
   p= answer.body
+
+  - if current_user&.author?(@question)
+    = link_to 'Mark the best',
+      set_best_answer_question_path(@question, best_answer_id: answer.id),
+      method: :patch,
+      remote: true      
   
   - if current_user&.author?(answer)
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true 
@@ -10,4 +16,3 @@
       = f.label :body, 'Your answer'
       = f.text_area :body
       = f.submit 'Update answer'
-
