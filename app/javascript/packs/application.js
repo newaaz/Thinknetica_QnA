@@ -13,3 +13,5 @@ Turbolinks.start()
 ActiveStorage.start()
 
 require('jquery')
+
+import 'direct_uploads'
