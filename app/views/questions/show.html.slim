@@ -1,10 +1,11 @@
-h1= @question.title
+= render 'questions/question_show', question: @question
 
-p= @question.body
+.best-answer  
+  - if @best_answer.present?
+    h3 BEST ANSWER
+    = @best_answer.body
 
-= render partial: 'answers/answer', collection: @answers, as: :answer
+.answers
+  = render partial: 'answers/answer', collection: @answers, as: :answer
 
 = render 'answers/form'
-
-- if current_user&.author?(@question)
-  = link_to 'Delete this question', question_path(@question), method: :delete

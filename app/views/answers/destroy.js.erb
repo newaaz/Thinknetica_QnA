@@ -1,0 +1,7 @@
+<% if @answer.destroyed? %>
+  $('#<%= dom_id(@answer) %>').remove()
+<% else %>
+  alert('This is not your answer')
+<% end %>
+
+

@@ -1,26 +1,19 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: %i[create]
-  before_action :set_answer, only: :destroy
+  before_action :set_answer, only: %i[destroy update]
 
   def create
-    @answer = Answer.new(answer_params.merge(author: current_user, question: @question))
-    if @answer.save
-      redirect_to question_path(params[:question_id]), notice: "Your answer successfully added"
-    else
-      @answers = @question.answers
-      render 'questions/show'    
-    end
+    @answer = @question.answers.create(answer_params.merge(author: current_user, question: @question))
   end
 
-  def destroy
-    if current_user.author?(@answer)
-      @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Answer was deleted'
-    else
-      flash[:alert] = 'This is not your answer'
-      redirect_back(fallback_location: root_path)      
-    end
+  def update
+    @answer.update(answer_params) if current_user.author?(@answer)
+    @question = @answer.question
+  end
+
+  def destroy    
+    @answer.destroy if current_user.author?(@answer)  
   end
 
   private
