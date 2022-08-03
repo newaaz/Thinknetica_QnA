@@ -3,8 +3,7 @@
   p= answer.body
 
   - if answer.files.attached?
-    - answer.files.each do |file|
-      p= link_to file.filename.to_s, url_for(file)
+    = render partial: 'answers/attachment', collection: answer.files, as: :file
 
   - if current_user&.author?(@question)
     = link_to 'Mark the best',
