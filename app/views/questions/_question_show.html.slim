@@ -1,11 +1,10 @@
 .question
-  h1= question.title
-  p= question.body
+  h1 = question.title
+  p = question.body
 
   - if question.files.attached?
-    - question.files.each do |file|
-      p= link_to file.filename.to_s, url_for(file)
-
+    = render partial: 'attachment', collection: question.files, as: :file
+      
   = form_with model: question, local: false, class: "hidden", id: "edit-question" do |f|
     p
       = f.label :title
@@ -23,3 +22,20 @@
     = link_to "Edit question", "#", class: "edit-question-link"
     |&nbsp;|&nbsp;
     = link_to 'Delete this question', question_path(question), method: :delete
+
+javascript: 
+  $(document).on('turbolinks:load', function(){
+    $('.answers').on('click', '.edit-answer-link', function(e) {
+      e.preventDefault()
+      $(this).hide()
+      const answerId = $(this).data('answerId')
+      $('form#edit-answer-' + answerId).removeClass('hidden')
+    })
+
+    $('.question').on('click', '.edit-question-link', function(e) {
+      e.preventDefault()
+      $(this).hide()
+      $('form#edit-question').removeClass('hidden')
+      $('.purge-link').removeClass('hidden')
+    })
+  })

@@ -7,4 +7,6 @@ Rails.application.routes.draw do
     resources :answers, only: %i[create destroy update], shallow: true
     patch :set_best_answer, on: :member
   end
+
+  delete 'attachments/:id/purge', to: 'attachments#purge', as: 'purge_attachment'
 end
