@@ -2,6 +2,10 @@
 
   p= answer.body
 
+  - if answer.files.attached?
+    - answer.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)
+
   - if current_user&.author?(@question)
     = link_to 'Mark the best',
       set_best_answer_question_path(@question, best_answer_id: answer.id),
@@ -15,4 +19,8 @@
     = form_with model: answer, local: false, class: "hidden", id: "edit-answer-#{answer.id}" do |f|
       = f.label :body, 'Your answer'
       = f.text_area :body
+
+      = f.label :files
+      = f.file_field :files, multiple: true 
+      
       = f.submit 'Update answer'

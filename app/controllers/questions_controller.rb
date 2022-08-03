@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @best_answer = @question.best_answer
-    @answers = @question.answers.where.not(id: @question.best_answer_id)
+    @answers = @question.answers.where.not(id: @question.best_answer_id).with_attached_files
   end
 
   def new
@@ -30,6 +30,7 @@ class QuestionsController < ApplicationController
 
   def update
     @question.update(question_params) if current_user.author?(@question)
+    # @question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'old_attachment.rb')
   end
 
   def destroy
@@ -53,10 +54,10 @@ class QuestionsController < ApplicationController
   private
 
   def set_question
-    @question = Question.find(params[:id])
+    @question = Question.with_attached_files.find(params[:id])
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, files: [])
   end
 end

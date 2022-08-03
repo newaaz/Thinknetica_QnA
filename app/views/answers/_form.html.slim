@@ -4,6 +4,11 @@ h3 Answer this question
   = render 'shared/errors', resource: @answer
 
 = form_with model: [@question, @answer], local: false, class: "new-answer" do |f|
-  = f.label :body
-  = f.text_area :body
+  p
+    = f.label :body
+    = f.text_area :body
+  p
+    = f.label :files
+    = f.file_field :files, multiple: true
+
   = f.submit 'Add answer'
