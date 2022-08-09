@@ -1,6 +1,12 @@
 .question
-  h1 = question.title
-  p = question.body
+  h1= question.title
+  p= question.body
+
+  .links
+    p Links:
+    ul
+      - @question.links.each do |link|
+        li= link_to link.name, link.url 
 
   - if question.files.attached?
     = render partial: 'attachment', collection: question.files, as: :file
