@@ -8,13 +8,14 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @answer.links.new
     @best_answer = @question.best_answer
     @answers = @question.answers.where.not(id: @question.best_answer_id).with_attached_files
   end
 
   def new
     @question = Question.new
-    @question.links.new       # .build
+    @question.links.new
   end
 
   def create
