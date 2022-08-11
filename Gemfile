@@ -38,8 +38,9 @@ end
 
 gem "slim-rails", "~> 3.5"
 gem "devise", "~> 4.8"
-
 gem "aws-sdk-s3", require: false
+gem "octicons_helper", "~> 17.2"
+gem "cocoon", "~> 1.2"
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
@@ -64,3 +65,5 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+
