@@ -13,8 +13,8 @@ h3 Answer this question
 
   p Links:
   = f.fields_for :links do |link|
-    = render 'link_fields', f: link
+    = render 'links/link_fields', f: link
   .links.mt-2
-    = link_to_add_association 'add link', f, :links
+    = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
         
   = f.submit 'Add answer'

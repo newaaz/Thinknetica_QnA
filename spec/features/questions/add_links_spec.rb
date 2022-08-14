@@ -7,48 +7,69 @@ feature 'User can add links to question', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:gist_url) { 'https://gist.github.com/newaaz/78edbf7ec647d87cacd1bffa2a51b3ad' }
+  given(:link_url) { 'https://gist.github.com/newaaz/78edbf7ec647d87cacd1bffa2a51b3ad' }  
 
-  background do
-    sign_in(user)
+  background { sign_in user  }
+  
+  describe 'User add links when create question' do
 
-    visit questions_path
-    click_on 'Ask question'
-    fill_in 'Title', with: 'Question Title'
-    fill_in 'Body', with: 'Question body'
+    background do
+      visit questions_path
+      click_on 'Ask question'
+      fill_in 'Title', with: 'Question Title'
+      fill_in 'Body', with: 'Question body'
+    end
+
+    scenario 'with valid link', js: true do  
+      click_on 'add link'    
+    
+      page.all('.nested-fields').each do |field|
+        within(field) do
+          fill_in 'Link name', with: 'My gist'
+          fill_in 'Url', with: link_url
+        end
+      end   
+      
+      click_on 'Ask'
+    
+      expect(page).to have_link 'My gist', href: link_url, count: 2
+    end
+
+    scenario 'with invalid' do
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: 'wrong url'
+      
+      click_on 'Ask'
+
+      expect(page).to have_content "Invalid url"
+    end
+
+    scenario 'with links to non-existent page' do
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: 'https://wrongsite/wrongsite/78edbf7ec647d87cacd1bffa2a51b3ad'
+      
+      click_on 'Ask'
+
+      expect(page).to have_content "This page does not exist"
+    end
   end
+
+  describe 'User add links wnen edit question' do
+    given!(:question) { create(:question, author: user) }
   
-  scenario 'User add links when create a question', js: true do  
-    click_on 'add link'    
-  
-    page.all('.nested-fields').each do |field|
-      within(field) do
+    scenario 'User add links when edit question', js: true do 
+      visit question_path question       
+      
+      within '.question' do
+        click_on 'Edit question'
+        click_on 'add link'
         fill_in 'Link name', with: 'My gist'
-        fill_in 'Url', with: gist_url
+        fill_in 'Url', with: link_url
+        click_on 'Save changes'
+    
+        expect(page).to have_link 'My gist', href: link_url
       end
-    end   
-    
-    click_on 'Ask'
-  
-    expect(page).to have_link 'My gist', href: gist_url, count: 2
-  end
-
-  scenario 'User add invalid link when create a question' do
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: 'wrong url'
-    
-    click_on 'Ask'
-
-    expect(page).to have_content "Invalid url"
-  end
-
-  scenario 'User links to non-existent page when create a question' do
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: 'https://wrongsite/wrongsite/78edbf7ec647d87cacd1bffa2a51b3ad'
-    
-    click_on 'Ask'
-
-    expect(page).to have_content "This page does not exist"
+    end
   end
 end
 

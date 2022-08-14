@@ -32,7 +32,6 @@ class QuestionsController < ApplicationController
 
   def update
     @question.update(question_params) if current_user.author?(@question)
-    # @question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'old_attachment.rb')
   end
 
   def destroy
