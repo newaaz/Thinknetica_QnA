@@ -41,6 +41,7 @@ gem "devise", "~> 4.8"
 gem "aws-sdk-s3", require: false
 gem "octicons_helper", "~> 17.2"
 gem "cocoon", "~> 1.2"
+gem 'active_storage_validations'
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.

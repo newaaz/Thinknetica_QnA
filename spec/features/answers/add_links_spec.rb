@@ -9,7 +9,7 @@ feature 'User can add links to answer', %q{
   given(:user)      { create(:user) }
   given(:question)  { create(:question) }
   given!(:answer)   { create(:answer, question: question, author: user) } 
-  given(:link_url)  { 'https://gist.github.com/newaaz/78edbf7ec647d87cacd1bffa2a51b3ad' }
+  given(:link_url)  { 'https://preview.tabler.io/form-elements.html' }
 
   background do
     sign_in(user)
