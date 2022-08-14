@@ -3,8 +3,12 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:author)    { create(:user) }
   let(:user)      { create(:user) }
+
   let(:question)  { create(:question, author: author) }
-  let(:answer)    { create(:answer, question: question) }
+  # let(:question)  { create(:question, author: author, award: create(:award)) }
+
+  let(:answer)    { create(:answer, question: question, author: user) }
+  
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
@@ -138,11 +142,24 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #set_best_answer' do
-    context 'sets best answer to their question (valid author)' do    
-      it 'set best answer for question' do
+    context 'Author of best answer get award' do
+      let(:question)  { create(:question, author: author, award: create(:award)) }
+      let(:answer)    { create(:answer, question: question, author: user) }
+
+      it 'assign award user to best answer author' do
         login author
         patch :set_best_answer, params: { id: question, best_answer_id: answer.id }, format: :js
         question.reload
+
+        expect(question.award.user).to eq user
+      end
+    end
+
+    context 'sets best answer to their question (valid author)' do  
+      it 'set best answer for question' do 
+        login author
+        patch :set_best_answer, params: { id: question, best_answer_id: answer.id }, format: :js
+        question.reload 
         expect(question.best_answer).to eq answer  
       end
     end
@@ -162,7 +179,7 @@ RSpec.describe QuestionsController, type: :controller do
         question.reload
         expect(question.best_answer).to_not eq answer  
       end
-    end    
+    end
   end
 
   describe 'DELETE #destroy' do
