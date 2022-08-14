@@ -7,6 +7,10 @@ class Link < ApplicationRecord
   validates :url, format: { with: /\A#{URI::regexp(['http', 'https'])}\z/, message: "Invalid url" }
   validate  :check_url
 
+  def gist?
+    url =~ /https*:\/\/gist.github.com\/\w+/
+  end
+
   private
 
   def check_url

@@ -1,0 +1,9 @@
+a.btn.btn-success.btn-sm data-bs-toggle="collapse" href="##{dom_id(link)}" role="button" aria-expanded="false" aria-controls="collapseExample"
+  = link.name
+
+= content_tag(:div, class: 'collapse mt-3', id: dom_id(link))
+  .card.card-body
+    = javascript_include_tag link.url+".js"
+
+
+
