@@ -1,0 +1,7 @@
+= content_tag(:div, id: dom_id(file))
+  - if file.image?
+    = image_tag file, width: "300px"
+  - else
+    p = link_to file.filename.to_s, url_for(file)
+
+  p = link_to 'delete this file', purge_attachment_path(file), method: :delete, remote: true, class: "purge-link hidden"

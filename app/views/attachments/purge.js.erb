@@ -1,0 +1,6 @@
+<% if @attachment.destroyed? %>
+  $('#<%= dom_id(@attachment) %>').remove()
+<% else %>
+  alert('This is not your question!')
+<% end %>
+

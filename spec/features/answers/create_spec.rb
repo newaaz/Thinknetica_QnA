@@ -29,6 +29,17 @@ feature 'User can answer the question', %q{
       click_on 'Add answer'
       expect(page).to have_content 'error(s) detected:'
     end
+
+    scenario 'create answer with attached files' do
+      within '.answer-form' do
+        fill_in 'Body', with: 'Correct answer - you need update gem'          
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Add answer'
+      end
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
   end
 
   scenario 'Unauthenticated user answers the question' do

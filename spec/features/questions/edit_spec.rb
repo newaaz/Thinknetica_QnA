@@ -12,7 +12,9 @@ feature 'User can edit his question', %q{
 
   describe 'Authenticated user', js: true do
     before do
-      sign_in author
+      question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'old_attachment.rb')
+
+      sign_in author      
       visit question_path question
       click_on 'Edit question'
     end
@@ -43,6 +45,25 @@ feature 'User can edit his question', %q{
         expect(page).to have_content question.title
         expect(page).to have_content question.body
         expect(page).to have_selector 'form'
+      end
+    end
+
+    scenario 'adds files when question editing' do
+      within '.question' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save changes'
+
+        expect(page).to have_content 'old_attachment.rb'
+        expect(page).to have_content 'spec_helper.rb'
+        expect(page).to have_content 'rails_helper.rb'
+      end
+    end
+
+    scenario 'delete attachments files when question editing' do
+      within '.question' do
+        click_on 'delete this file'
+
+        expect(page).to_not have_content 'old_attachment.rb'
       end
     end
   end

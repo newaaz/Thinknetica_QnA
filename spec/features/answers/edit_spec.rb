@@ -13,6 +13,8 @@ feature 'User can edit his answer', %q{
 
   describe 'Authenticated user', js: true do
     background do
+      answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'old_attachment.rb')
+
       sign_in author
       visit question_path question
 
@@ -38,6 +40,25 @@ feature 'User can edit his answer', %q{
         expect(page).to have_content 'error(s) detected'
         expect(page).to have_content answer.body
         expect(page).to have_selector 'textarea'
+      end
+    end
+
+    scenario 'adds files when answer editing' do
+      within '.answers' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Update answer'
+
+        expect(page).to have_content 'old_attachment.rb'
+        expect(page).to have_content 'spec_helper.rb'
+        expect(page).to have_content 'rails_helper.rb'
+      end
+    end
+
+    scenario 'delete attachments files when answer editing' do
+      within "#answer_#{answer.id}" do
+        click_on 'delete this file'
+
+        expect(page).to_not have_content 'old_attachment.rb'
       end
     end
   end

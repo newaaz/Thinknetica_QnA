@@ -13,4 +13,5 @@ Turbolinks.start()
 ActiveStorage.start()
 
 require('jquery')
-require('utitilities/show_answers_form')
+
+import 'direct_uploads'
