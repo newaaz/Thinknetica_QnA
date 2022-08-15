@@ -6,14 +6,13 @@ feature 'User can see their rewards', %q{
   I'd like to be able to create award for best answer on my question
 } do
 
-  given(:user) { create(:user) }
-  given(:questions)  { create_list(:question, 2) }
+  given(:user)        { create(:user) }
+  given(:questions)   { create_list(:question, 2) }
   given!(:award1)     { create(:award, question: questions[0], user: user) }
   given!(:award2)     { create(:award, question: questions[1], user: user) }
 
   scenario 'create question with award' do
-    sign_in user
-    
+    sign_in user    
     click_on 'Awards'
 
     expect(page).to have_content "Award title", count: 2
