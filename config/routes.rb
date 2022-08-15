@@ -10,5 +10,7 @@ Rails.application.routes.draw do
 
   delete 'attachments/:id/purge', to: 'attachments#purge', as: 'purge_attachment'
 
-  resources :links, only: %i[create destroy]
+  resources :links, only: :destroy
+
+  get 'users/:id/awards', to: 'users#awards', as: 'awards_user'
 end

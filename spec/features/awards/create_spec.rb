@@ -28,7 +28,6 @@ feature 'Author of question can an award for the best answer', %q{
   end
 
   scenario 'create question with award with errors' do  
-    #fill_in 'Award`s title', with: 'For the mind'
     attach_file 'Image', "#{Rails.root}/app/assets/images/icons/award.png" 
         
     click_on 'Ask'

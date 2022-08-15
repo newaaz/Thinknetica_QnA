@@ -1,0 +1,7 @@
+.col-md-3
+  h3 = award.title
+  = image_tag award.image.variant(resize_to_limit: [300, 300])
+  |Question:
+  = link_to award.question.title, question_path(award.question)
+
+
