@@ -1,0 +1,5 @@
+<% if @link.destroyed? %>
+  $('#<%= dom_id(@link) %>').remove()
+<% else %>
+  alert('This is not your question!')
+<% end %>

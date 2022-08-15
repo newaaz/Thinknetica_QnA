@@ -14,4 +14,9 @@ ActiveStorage.start()
 
 require('jquery')
 
+require("@nathanvda/cocoon")
+
 import 'direct_uploads'
+
+import 'bootstrap'
+

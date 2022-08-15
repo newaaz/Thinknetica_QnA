@@ -1,0 +1,9 @@
+= content_tag(:div, id: dom_id(link), class: 'mb-2')
+
+  - if link.gist?
+    = render 'links/gist_link', link: link
+  - else
+    = link_to link.name, link.url
+  |&nbsp;
+  = link_to 'delete', link_path(link), method: :delete, remote: true, class: 'purge-link hidden btn btn-outline-danger btn-sm' 
+

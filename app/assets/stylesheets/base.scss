@@ -1,5 +1,10 @@
-.float-right {
-  float: right;
-}
+@import "bootstrap/scss/bootstrap";
+
+body { background:#f9f9f9; line-height:22px; color:#444; font-weight: 400; }
 
 .hidden { display: none; }
+
+.octicon {
+  display: inline-block;
+  fill: currentColor;
+}
