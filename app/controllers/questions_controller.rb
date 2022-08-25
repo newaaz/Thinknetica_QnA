@@ -1,9 +1,15 @@
 class QuestionsController < ApplicationController
+  include Voted
+  
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: %i[show edit update destroy set_best_answer]
 
   def index
-    @questions = Question.all
+    @questions = Question.all.order(:id)
+    
+    if current_user
+      @voted_questions = voted_resources('Question')
+    end
   end
 
   def show

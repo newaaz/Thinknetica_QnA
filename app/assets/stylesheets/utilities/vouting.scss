@@ -1,0 +1,41 @@
+$success-custom: #16b81e;
+$success-danger: #d63939;
+
+.link-upvote-true {
+  text-decoration: none;
+  background-color: $success-custom;
+  font-weight: 600;
+  color: #fff;
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.link-upvote-false,.link-upvote- {
+  text-decoration: none;
+  border: $success-custom 1px solid;
+  font-weight: 600;
+  color: $success-custom;
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.link-downvote-true,.link-downvote- {
+  text-decoration: none;
+  border: $success-danger 1px solid;
+  font-weight: 600;
+  color: $success-danger;
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.link-downvote-false {
+  text-decoration: none;
+  background-color: $success-danger;
+  font-weight: 600;
+  color: #fff;
+  padding: 7px;
+  border-radius: 5px;
+}
+
+
+

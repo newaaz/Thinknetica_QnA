@@ -1,0 +1,20 @@
+
+.question-rating
+  = resource.rating
+
+- if current_user
+
+  = link_to polymorphic_path(resource, action: :upvote),
+                method: :patch, class: "link-upvote-#{@voted_questions[resource.id]}"
+    = octicon 'thumbsup'
+    |&nbsp; Like  
+
+  = link_to polymorphic_path(resource, action: :downvote),
+                method: :patch, class: "link-downvote-#{@voted_questions[resource.id]}"
+    = octicon 'thumbsdown'
+    |&nbsp; Dislike      
+
+- else
+
+
+
