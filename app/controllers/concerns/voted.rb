@@ -6,40 +6,41 @@ module Voted
   end
 
   def upvote
+    render_json_with_errors(["You are the author of this question"]) && return if current_user.author?(@votable)
 
     if @vote = Vote.find_by(user: current_user, votable: @votable)
       if @vote.liked?
         @vote.destroy
-        @votable.rating_down!(1)
+        @votable.change_rating_on!(-1)
       else
         @vote.update(liked: true)
-        @votable.rating_up!(2)
+        @votable.change_rating_on!(2)
       end
     else
-      @votable.votes.create(liked: true, user: current_user)
-      @votable.rating_up!(1)
+      @vote = @votable.votes.create(liked: true, user: current_user)
+      @votable.change_rating_on!(1)
     end
 
-    redirect_to root_path
+    render_json_success_vote
   end
 
   def downvote
+    render_json_with_errors(["You are the author of this question"]) && return if current_user.author?(@votable)
+
     if @vote = Vote.find_by(user: current_user, votable: @votable)
       if @vote.liked?
         @vote.update(liked: false)
-        @votable.rating_down!(2)
+        @votable.change_rating_on!(-2)
       else
         @vote.destroy
-        @votable.rating_up!(1)
+        @votable.change_rating_on!(1)
       end
     else
-      @votable.votes.create(liked: false, user: current_user)
-      @votable.rating_down!(1)
-    end    
-
-    # render js: "console.log('#{@votable.title}')"
-
-    redirect_to root_path
+      @vote = @votable.votes.create(liked: false, user: current_user)
+      @votable.change_rating_on!(-1)
+    end
+    
+    render_json_success_vote
   end
 
   def voted_resources(resource_type)
@@ -54,6 +55,21 @@ module Voted
 
   private
 
+  def render_json_success_vote
+    render json: {
+      resource: @votable.class.name.downcase,
+      id:       @votable.id,
+      rating:   @votable.rating,
+      liked:    @vote.persisted? ? @vote.liked.to_s : "destroyed"
+    }
+  end
+
+  def render_json_with_errors(errors)
+    render json: {
+      errors: errors
+    }, status: :unprocessable_entity
+  end
+
   def model_klass
     controller_name.classify.constantize
   end
@@ -61,6 +77,5 @@ module Voted
   def set_votable
     @votable = model_klass.find(params[:id])
   end
-
 end
 

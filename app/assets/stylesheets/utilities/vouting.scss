@@ -1,39 +1,46 @@
 $success-custom: #16b81e;
-$success-danger: #d63939;
+$danger-custom: #d63939;
+$secondary-custom: #999;
 
-.link-upvote-true {
+.link-voute {
   text-decoration: none;
-  background-color: $success-custom;
+  display: inline-block;
+  min-width: 60px;
+  text-align: center;
   font-weight: 600;
-  color: #fff;
-  padding: 7px;
+  color: $secondary-custom;
+  padding: 5px 7px;
   border-radius: 5px;
 }
 
-.link-upvote-false,.link-upvote- {
-  text-decoration: none;
+.link-voute.link-upvote {
   border: $success-custom 1px solid;
-  font-weight: 600;
   color: $success-custom;
-  padding: 7px;
-  border-radius: 5px;
 }
 
-.link-downvote-true,.link-downvote- {
-  text-decoration: none;
-  border: $success-danger 1px solid;
-  font-weight: 600;
-  color: $success-danger;
-  padding: 7px;
-  border-radius: 5px;
+.link-voute.link-downvote {
+  border: $danger-custom 1px solid;
+  color: $danger-custom;
 }
 
-.link-downvote-false {
-  text-decoration: none;
-  background-color: $success-danger;
-  font-weight: 600;
+.link-voute.link-upvote.enabled {
   color: #fff;
-  padding: 7px;
+  background-color: $success-custom;
+}
+
+.link-voute.link-downvote.enabled {
+  color: #fff;
+  background-color: $danger-custom;
+}
+
+.question-rating {
+  display: inline-block;
+  min-width: 30px;
+  text-align: center;
+  border: $secondary-custom 1px solid;
+  font-weight: 600;
+  color: $secondary-custom;
+  padding: 5px 7px;
   border-radius: 5px;
 }
 

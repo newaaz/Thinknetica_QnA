@@ -1,20 +1,8 @@
+= content_tag(:div, id: "vouting_#{dom_id(resource)}", class: "vouting" )
 
-.question-rating
-  = resource.rating
+  .question-rating.me-2
+    = resource.rating
 
-- if current_user
-
-  = link_to polymorphic_path(resource, action: :upvote),
-                method: :patch, class: "link-upvote-#{@voted_questions[resource.id]}"
-    = octicon 'thumbsup'
-    |&nbsp; Like  
-
-  = link_to polymorphic_path(resource, action: :downvote),
-                method: :patch, class: "link-downvote-#{@voted_questions[resource.id]}"
-    = octicon 'thumbsdown'
-    |&nbsp; Dislike      
-
-- else
-
-
-
+  - if current_user
+    = link_upvote(resource, @voted_questions[resource.id])  
+    = link_downvote(resource, @voted_questions[resource.id])  
