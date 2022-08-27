@@ -8,7 +8,7 @@ $(document).on('turbolinks:load', function(){
 
     const $resourceDiv = '#vouting_' + resourceName + '_' + resourceId
 
-    $('.' + resourceName + '-rating', $resourceDiv).html(resourceRating)
+    $('.rating', $resourceDiv).html(resourceRating)
 
     if (resourceLiked == 'true') {
       $('.link-upvote', $resourceDiv).addClass('enabled')

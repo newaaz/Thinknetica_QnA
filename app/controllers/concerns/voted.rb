@@ -43,6 +43,7 @@ module Voted
     render_json_success_vote
   end
 
+  # TODO: need refactor
   def voted_resources(resource_type)
     voted_resources_hash = {}
     

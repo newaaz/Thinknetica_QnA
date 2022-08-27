@@ -1,8 +1,8 @@
 = content_tag(:div, id: "vouting_#{dom_id(resource)}", class: "vouting" )
 
-  .question-rating.me-2
+  .rating.me-2
     = resource.rating
 
   - if current_user
-    = link_upvote(resource, @voted_questions[resource.id])  
-    = link_downvote(resource, @voted_questions[resource.id])  
+    = link_upvote(resource, @voted_resources[resource.id])  
+    = link_downvote(resource, @voted_resources[resource.id])  

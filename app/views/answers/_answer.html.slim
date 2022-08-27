@@ -1,5 +1,5 @@
-= content_tag(:div, class: "answer", id: dom_id(answer))
-
+= content_tag(:div, id: dom_id(answer), class: "answer bg-white border shadow shadow-sm p-3 rounded mb-3")
+  
   p= answer.body
 
   - if answer.links.any?
@@ -35,3 +35,8 @@
           = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
       
       = f.submit 'Update answer'
+
+  = render 'votes/vouting', resource: answer
+
+
+
