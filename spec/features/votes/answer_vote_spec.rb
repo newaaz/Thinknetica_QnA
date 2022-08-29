@@ -109,7 +109,7 @@ feature 'Authenticated user can vote for the answer they liked', %q{
         expect(page).to have_content "0"
       end
       
-      expect(page).to have_content('You are the author of this question')
+      expect(page).to have_content('You are the author of this answer')
     end
   end
 

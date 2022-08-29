@@ -1,43 +1,39 @@
 module Voted
   extend ActiveSupport::Concern
 
+  include VotedHelper
+
   included do
     before_action :set_votable, only: %i[upvote downvote]
   end
 
   def upvote
-    render_json_with_errors(["You are the author of this question"]) && return if current_user.author?(@votable)
+    render_json_with_errors(["You are the author of this #{@votable.class.name.downcase}"]) && return if current_user.author?(@votable)
 
-    if @vote = Vote.find_by(user: current_user, votable: @votable)
+    if @vote = Vote.find_by(votable: @votable, user: current_user)
       if @vote.liked?
-        @vote.destroy
-        @votable.change_rating_on!(-1)
+        @votable.vote_cancel(@vote)
       else
-        @vote.update(liked: true)
-        @votable.change_rating_on!(2)
+        @votable.vote_vice_versa(@vote)
       end
     else
-      @vote = @votable.votes.create(liked: true, user: current_user)
-      @votable.change_rating_on!(1)
+      @vote = create_vote_up
     end
 
     render_json_success_vote
   end
 
   def downvote
-    render_json_with_errors(["You are the author of this question"]) && return if current_user.author?(@votable)
+    render_json_with_errors(["You are the author of this #{@votable.class.name.downcase}"]) && return if current_user.author?(@votable)
 
-    if @vote = Vote.find_by(user: current_user, votable: @votable)
-      if @vote.liked?
-        @vote.update(liked: false)
-        @votable.change_rating_on!(-2)
+    if @vote = Vote.find_by(votable: @votable, user: current_user)
+      if @vote.disliked?
+        @votable.vote_cancel(@vote)
       else
-        @vote.destroy
-        @votable.change_rating_on!(1)
+        @votable.vote_vice_versa(@vote)
       end
     else
-      @vote = @votable.votes.create(liked: false, user: current_user)
-      @votable.change_rating_on!(-1)
+      @vote = create_vote_down
     end
     
     render_json_success_vote
@@ -55,6 +51,16 @@ module Voted
   end
 
   private
+
+  def create_vote_up
+    @votable.rating_up!(1)
+    @votable.votes.create(liked: true, user: current_user)    
+  end
+
+  def create_vote_down
+    @votable.rating_down!(-1)
+    @votable.votes.create(liked: false, user: current_user)    
+  end
 
   def render_json_success_vote
     render json: {
