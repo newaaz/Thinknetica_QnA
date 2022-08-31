@@ -24,4 +24,6 @@ Rails.application.routes.draw do
   resources :links, only: :destroy
 
   get 'users/:id/awards', to: 'users#awards', as: 'awards_user'
+
+  mount ActionCable.server => '/cable'
 end
