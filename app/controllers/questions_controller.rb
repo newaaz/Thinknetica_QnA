@@ -1,9 +1,15 @@
 class QuestionsController < ApplicationController
+  include Voted
+  
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: %i[show edit update destroy set_best_answer]
 
   def index
-    @questions = Question.all
+    @questions = Question.all.order(:id)
+    
+    if current_user
+      @voted_resources = voted_resources('Question')
+    end
   end
 
   def show
@@ -11,6 +17,10 @@ class QuestionsController < ApplicationController
     @answer.links.new
     @best_answer = @question.best_answer
     @answers = @question.answers.where.not(id: @question.best_answer_id).with_attached_files
+
+    if current_user
+      @voted_resources = voted_resources('Answer') # for the vouting
+    end
   end
 
   def new
@@ -37,7 +47,6 @@ class QuestionsController < ApplicationController
 
   def destroy
     if current_user.author?(@question)
-      #@question.best_answer.destroy if @question.best_answer.present?
       @question.destroy
       redirect_to questions_path, notice: 'Your question was deleted'
     else
@@ -54,6 +63,8 @@ class QuestionsController < ApplicationController
       @question.award.update(user: @best_answer.author) if @question.award.present?    
 
       @answers = @question.answers.where.not(id: @question.best_answer_id)
+
+      @voted_resources = voted_resources('Answer') # for the vouting
     end
   end
 
