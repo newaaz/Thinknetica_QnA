@@ -43,6 +43,9 @@ gem "octicons_helper", "~> 17.2"
 gem "cocoon", "~> 1.2"
 gem 'active_storage_validations'
 
+#get your Rails variables in your js
+gem "gon", "~> 6.4"
+
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 4.1.0'
@@ -66,5 +69,4 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
 

@@ -7,11 +7,9 @@ class QuestionsController < ApplicationController
   after_action  :publish_question, only: :create
 
   def index
-    @questions = Question.all.order(:id)
+    @questions = Question.all.order(:id)    
     
-    if current_user
-      @voted_resources = voted_resources('Question')
-    end
+    @voted_resources = voted_resources('Question') if current_user # vouting for questions
   end
 
   def show
@@ -20,9 +18,7 @@ class QuestionsController < ApplicationController
     @best_answer = @question.best_answer
     @answers = @question.answers.where.not(id: @question.best_answer_id).with_attached_files
 
-    if current_user
-      @voted_resources = voted_resources('Answer') # for the vouting
-    end
+    @voted_resources = voted_resources('Answer') if current_user # vouting for answers
   end
 
   def new
@@ -66,7 +62,7 @@ class QuestionsController < ApplicationController
 
       @answers = @question.answers.where.not(id: @question.best_answer_id)
 
-      @voted_resources = voted_resources('Answer') # for the vouting
+      @voted_resources = voted_resources('Answer') # vouting for answers
     end
   end
 
@@ -75,13 +71,7 @@ class QuestionsController < ApplicationController
   def publish_question
     return if @question.errors.any?
 
-    ActionCable.server.broadcast(
-      :questions,
-      ApplicationController.render(
-        partial: 'questions/simple_question',
-        locals: { question: @question }
-      )
-    )
+    ActionCable.server.broadcast(:questions, @question.to_json)
   end
 
   def set_question
