@@ -19,6 +19,8 @@ class QuestionsController < ApplicationController
     @answers = @question.answers.where.not(id: @question.best_answer_id).with_attached_files
 
     @voted_resources = voted_resources('Answer') if current_user # vouting for answers
+
+    gon.question_id = @question.id
   end
 
   def new
