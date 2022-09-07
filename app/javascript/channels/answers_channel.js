@@ -17,7 +17,6 @@ $(document).on('turbolinks:load', function(){
       createAnswerPartial(data) {
         const answer = JSON.parse(data)
         return answer.body
-        //return "ttttttttttttttttttt"
       }
 
 

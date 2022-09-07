@@ -8,11 +8,11 @@ $(document).on('turbolinks:load', function(){
       },
 
       prependQuestion(data) {
-        const questionPartial = this.createQuestionParshial(data)
+        const questionPartial = this.createQuestionPartial(data)
         $('.questions-list').prepend(questionPartial)
       },
 
-      createQuestionParshial(data) {
+      createQuestionPartial(data) {
         const question = JSON.parse(data)
 
         const $questionDiv = $("<div>", {

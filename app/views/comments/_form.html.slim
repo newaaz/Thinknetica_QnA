@@ -1,0 +1,13 @@
+.col-8.my-5
+  h3 Comment this question
+
+  = form_for @comment, url: polymorphic_path(resource, action: :create_comment), remote: true,
+                       html: { class: "new-comment-question", id: "somethinggggg-elllssee",
+                               data: { type: :json }}  do |f|
+    p
+      = f.label :body
+      = f.text_area :body, class: 'form-control', rows: 5
+
+    = f.submit 'Add comment', class: 'btn btn-primary btn-sm'
+
+

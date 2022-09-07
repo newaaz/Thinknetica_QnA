@@ -1,5 +1,13 @@
 = render 'questions/question_show'
 
+.comment-question-form
+  = render 'comments/form', resource: @question
+
+.question-comments
+  - if @question.comments.any?
+    h2 Question comments
+    = render @question.comments
+
 .best-answer  
   - if @best_answer.present?
     h3 BEST ANSWER

@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
   
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: %i[show edit update destroy set_best_answer]
@@ -14,13 +15,14 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @comment = Comment.new
     @answer.links.new
     @best_answer = @question.best_answer
     @answers = @question.answers.where.not(id: @question.best_answer_id).with_attached_files
 
     @voted_resources = voted_resources('Answer') if current_user # vouting for answers
 
-    gon.question_id = @question.id
+    gon.question_id = @question.id    
   end
 
   def new

@@ -10,18 +10,19 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions do
-    resources :answers, only: %i[create destroy update], shallow: true do
-      concerns  :votable
-    end
-    
-    patch :set_best_answer, on: :member
-    concerns  :votable
+  concern :commentable do
+    post  :create_comment, on: :member
   end
 
-  delete 'attachments/:id/purge', to: 'attachments#purge', as: 'purge_attachment'
+  resources :questions, concerns: %i[votable commentable] do
+    resources :answers, concerns: %i[votable commentable], only: %i[create destroy update], shallow: true
+    
+    patch :set_best_answer, on: :member    
+  end
 
   resources :links, only: :destroy
+
+  delete 'attachments/:id/purge', to: 'attachments#purge', as: 'purge_attachment'  
 
   get 'users/:id/awards', to: 'users#awards', as: 'awards_user'
 
