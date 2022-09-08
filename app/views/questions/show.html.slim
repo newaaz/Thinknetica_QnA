@@ -1,12 +1,13 @@
 = render 'questions/question_show'
 
 = content_tag(:div, id: dom_id(@question))
-  .comments
-    h2 Question comments
-    - if @question.comments.any?
-      
+  h3 Question comments
+  .comments    
+    - if @question.comments.any?      
       = render @question.comments
-    
+
+    = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
+        
     = render 'comments/form', resource: @question
 
 .best-answer  

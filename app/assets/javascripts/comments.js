@@ -1,49 +1,32 @@
 $(document).on('turbolinks:load', function(){
-
   $('.new-comment').on('ajax:success', function(e) {
     e.currentTarget.reset()
 
-    const commentBody = e.detail[0].comment.body
-    const commentResourceType = e.detail[0].comment.commentable_type.toLowerCase()
-    const commentResourceId = e.detail[0].comment.commentable_id
+    const comment = e.detail[0].comment
 
-    // create partial for comment
+    const commentBody = comment.body
     const $commentPartial = $("<div>", {
-      class: "comment col-6 ms-5 mb-2 p-2 border rounded text-secondary"
-    })
-      .append(commentBody)
+                                class: "comment col-6 ms-5 mb-2 p-2 border rounded text-secondary"
+                              }).append(commentBody)
 
-    // insert comment partial to resource comments
+    const commentResourceType = comment.commentable_type.toLowerCase()
+    const commentResourceId = comment.commentable_id
     const resourceDiv = `#${commentResourceType}_${commentResourceId}`
-    $('.comments', resourceDiv).append($commentPartial)
-    
-  }) // need refactor - send from voted res_type, res_id
+    $('.comments', resourceDiv).prepend($commentPartial)
+
+    $(this).toggleClass('hidden')    
+  })
     .on('ajax:error', function(e) {
       const errors = e.detail[0].errors
-
       $.each(errors, function(index, value) {
         $('.comments').append(value)
       })
     })
 
-
-  // Answer comments  
   $('a.comment-btn').on('click', function(e) {
     e.preventDefault()
-
-    const answerId = $(this).data('resourceId')
-
-    const form = document.getElementById('new-comment')
-
-    form.setAttribute('action', `/answers/${answerId}/create_comment`)
-    form.setAttribute('id', `answer-${answerId}-new-comment`)
-
-    
-    console.log(form.getAttribute('action'))
-    e.currentTarget.parentElement.append(form)
-
-
-
+    const form = $('form', this.parentElement)
+    form.toggleClass('hidden')
   })
 })
 

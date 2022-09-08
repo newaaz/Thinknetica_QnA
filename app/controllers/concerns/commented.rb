@@ -7,8 +7,6 @@ module Commented
   end
 
   def create_comment
-    #debugger
-
     @comment = @commentable.comments.new(body: params[:comment][:body], user: current_user)
     
     if @comment.save
@@ -16,29 +14,30 @@ module Commented
     else
       render_json_with_errors(@comment.errors)
     end
+  end
 
+  def create_form
+    debugger
   end
 
   private
 
   def publish_comment
     return if @comment.errors.any?
-    
-    ActionCable.server.broadcast("question_#{@commentable.id}_and_answers_comments", @comment.to_json )
+
+    ActionCable.server.broadcast("question_#{set_question_id}_and_answers_comments", @comment.to_json )
+  end
+
+  def set_question_id
+    @comment.commentable_type == 'Question' ? @commentable.id : @commentable.question.id
   end
 
   def render_json_comment
-    render json: {
-      comment:  @comment,
-      resource: @commentable.class.name.downcase,
-      id:       @commentable.id
-    }
+    render json: { comment: @comment }
   end
 
   def render_json_with_errors(errors)
-    render json: {
-      errors: errors
-    }, status: :unprocessable_entity
+    render json: { errors: errors }, status: :unprocessable_entity
   end
 
   def model_klass
@@ -49,4 +48,3 @@ module Commented
     @commentable = model_klass.find(params[:id])
   end
 end
-
