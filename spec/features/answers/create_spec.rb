@@ -45,7 +45,35 @@ feature 'User can answer the question', %q{
   scenario 'Unauthenticated user answers the question' do
     visit question_path question
     click_on 'Add answer'
-
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
+  end
+
+  describe 'multiple_sessions', js: true do  
+    scenario "new answer appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in user
+        visit question_path question         
+      end
+      
+      Capybara.using_session('quest') do
+        visit question_path question      
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Body', with: 'Correct answer - you need update gem'
+        click_on 'Add answer'
+
+        expect(current_path).to eq question_path question
+        within '.answers' do
+          expect(page).to have_content 'Correct answer - you need update gem', count: 1
+        end        
+      end
+
+      Capybara.using_session('quest') do
+        within '.answers' do
+          expect(page).to have_content 'Correct answer - you need update gem'
+        end     
+      end    
+    end    
   end
 end

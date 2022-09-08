@@ -36,21 +36,15 @@
       
       = f.submit 'Update answer'
 
-  = render 'votes/vouting', resource: answer
-
-  
+  = render 'votes/vouting', resource: answer  
 
   h4.ms-5 This answer comments:
   .comments
     - if answer.comments.any?      
       = render answer.comments
 
-    = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
+    - if current_user
+      = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
 
     = render 'comments/form', resource: answer
-
-
-  
-                            
-
 

@@ -30,7 +30,7 @@ class AnswersController < ApplicationController
   def publish_answer
     return if @answer.errors.any?
   
-    ActionCable.server.broadcast("question_#{@question.id}_answers", @answer.to_json )
+    ActionCable.server.broadcast("question_#{@question.id}_answers", @answer.to_json(include: :links) )
   end
 
   def set_answer

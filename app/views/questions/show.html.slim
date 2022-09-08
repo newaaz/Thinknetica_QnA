@@ -5,8 +5,9 @@
   .comments    
     - if @question.comments.any?      
       = render @question.comments
-
-    = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
+    
+    - if current_user
+      = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
         
     = render 'comments/form', resource: @question
 
@@ -15,9 +16,9 @@
     h3 BEST ANSWER
     = @best_answer.body
 
+h2 Answers
 .answers
-  - if @question.answers.any?
-    h2 Answers
+  - if @question.answers.any?    
     = render partial: 'answers/answer', collection: @answers, as: :answer
 
 .answer-form

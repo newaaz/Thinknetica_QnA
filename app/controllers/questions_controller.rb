@@ -15,7 +15,6 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
-    @comment = Comment.new
     @answer.links.new
     @best_answer = @question.best_answer
     @answers = @question.answers.where.not(id: @question.best_answer_id).with_attached_files
@@ -75,7 +74,7 @@ class QuestionsController < ApplicationController
   def publish_question
     return if @question.errors.any?
 
-    ActionCable.server.broadcast(:questions, @question.to_json)
+    ActionCable.server.broadcast(:questions, @question.to_json(include: :links))
   end
 
   def set_question

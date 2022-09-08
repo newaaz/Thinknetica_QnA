@@ -12,6 +12,16 @@ $(document).on('turbolinks:load', function(){
         $('.questions-list').prepend(questionPartial)
       },
 
+      addLinksToQuestion(links) {
+        let linksList = ''
+
+        $.each(links, function(index, link) {
+          linksList += `<p><a href=${link.url}>${link.name}</a></p>`
+        })
+
+        return linksList
+      },
+
       createQuestionPartial(data) {
         const question = JSON.parse(data)
 
@@ -51,6 +61,10 @@ $(document).on('turbolinks:load', function(){
             Dislike
           </a>
         `
+        if (question.links.length > 0) {
+          $questionDiv.append(this.addLinksToQuestion(question.links))
+        }
+
         if (gon.current_user_id) {
           $voutingDiv.append(voutingLinks)
         }

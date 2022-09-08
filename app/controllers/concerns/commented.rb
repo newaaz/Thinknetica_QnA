@@ -16,10 +16,6 @@ module Commented
     end
   end
 
-  def create_form
-    debugger
-  end
-
   private
 
   def publish_comment

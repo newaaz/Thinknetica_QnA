@@ -27,8 +27,7 @@ feature 'User can create question', %q{
     end
   
     scenario 'Create a question with errors' do
-      click_on 'Ask'
-  
+      click_on 'Ask'  
       expect(page).to have_content "Title can't be blank"
     end
 
@@ -46,12 +45,11 @@ feature 'User can create question', %q{
   scenario 'Unauthenticated user tries to create a question' do
     visit questions_path
     click_on 'Ask question'
-
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
   describe 'multiple_sessions', js: true do
-    scenario "new question appears on anothe user's page" do
+    scenario "new question appears on another user's page" do
       Capybara.using_session('user') do
         sign_in user
         visit questions_path         
@@ -74,9 +72,7 @@ feature 'User can create question', %q{
 
       Capybara.using_session('quest') do
         expect(page).to have_content 'Question Title' 
-      end
-    
-  
-    end
+      end  
+    end    
   end
 end
