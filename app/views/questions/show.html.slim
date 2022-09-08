@@ -1,12 +1,13 @@
 = render 'questions/question_show'
 
-.comment-question-form
-  = render 'comments/form', resource: @question
-
-.question-comments
-  - if @question.comments.any?
+= content_tag(:div, id: dom_id(@question))
+  .comments
     h2 Question comments
-    = render @question.comments
+    - if @question.comments.any?
+      
+      = render @question.comments
+    
+    = render 'comments/form', resource: @question
 
 .best-answer  
   - if @best_answer.present?

@@ -38,5 +38,15 @@
 
   = render 'votes/vouting', resource: answer
 
+  .comments
+    - if answer.comments.any?
+      h2 this answer comments
+      = render answer.comments
+
+    = render 'comments/form', resource: answer
+
+
+  = link_to 'comment', '#', class: 'comment-btn btn btn-outline-success btn-sm',
+                            data: { resource_type: 'answers', resource_id: answer.id }
 
 

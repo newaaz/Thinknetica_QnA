@@ -3,6 +3,7 @@ module Commented
 
   included do
     before_action :set_commentable, only: :create_comment
+    after_action  :publish_comment, only: :create_comment
   end
 
   def create_comment
@@ -18,17 +19,13 @@ module Commented
 
   end
 
-  def upvote
-    render_json_with_errors(["You are the author of this"]) if current_user.id == 'no_matter'
-
-    if @vote = Vote.find_by(votable: @votable, user: current_user)
-      @vote = create_vote_up
-    end
-
-    render_json_comment
-  end
-
   private
+
+  def publish_comment
+    return if @comment.errors.any?
+    
+    ActionCable.server.broadcast("question_#{@commentable.id}_and_answers_comments", @comment.to_json )
+  end
 
   def render_json_comment
     render json: {
