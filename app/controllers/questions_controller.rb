@@ -1,15 +1,16 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
   
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: %i[show edit update destroy set_best_answer]
 
+  after_action  :publish_question, only: :create
+
   def index
-    @questions = Question.all.order(:id)
+    @questions = Question.all.order(:id)    
     
-    if current_user
-      @voted_resources = voted_resources('Question')
-    end
+    @voted_resources = voted_resources('Question') if current_user # vouting for questions
   end
 
   def show
@@ -18,9 +19,9 @@ class QuestionsController < ApplicationController
     @best_answer = @question.best_answer
     @answers = @question.answers.where.not(id: @question.best_answer_id).with_attached_files
 
-    if current_user
-      @voted_resources = voted_resources('Answer') # for the vouting
-    end
+    @voted_resources = voted_resources('Answer') if current_user # vouting for answers
+
+    gon.question_id = @question.id    
   end
 
   def new
@@ -64,11 +65,17 @@ class QuestionsController < ApplicationController
 
       @answers = @question.answers.where.not(id: @question.best_answer_id)
 
-      @voted_resources = voted_resources('Answer') # for the vouting
+      @voted_resources = voted_resources('Answer') # vouting for answers
     end
   end
 
   private
+
+  def publish_question
+    return if @question.errors.any?
+
+    ActionCable.server.broadcast(:questions, @question.to_json(include: :links))
+  end
 
   def set_question
     @question = Question.with_attached_files.find(params[:id])
