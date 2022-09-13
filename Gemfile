@@ -37,14 +37,19 @@ group :development, :test do
 end
 
 gem "slim-rails", "~> 3.5"
-gem "devise", "~> 4.8"
 gem "aws-sdk-s3", require: false
 gem "octicons_helper", "~> 17.2"
 gem "cocoon", "~> 1.2"
 gem 'active_storage_validations'
 
-#get your Rails variables in your js
+# get your Rails variables in your js
 gem "gon", "~> 6.4"
+
+# Authentication
+gem "devise", "~> 4.8"
+gem "omniauth", "~> 2.1"
+gem "omniauth-rails_csrf_protection", "~> 1.0"
+gem "omniauth-github", "~> 2.0"
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
