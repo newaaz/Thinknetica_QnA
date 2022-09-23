@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
+  get 'new_user', to: 'users#new', as: 'new_user'
+  post 'create_user'  , to: 'users#create', as: 'create_user'
+
   concern :votable do
     member do
       patch :upvote

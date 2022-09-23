@@ -1,9 +1,11 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:github]
+  devise  :database_authenticatable,
+          :registerable,
+          :recoverable,
+          :rememberable,
+          :validatable,
+          :confirmable,
+          :omniauthable, omniauth_providers: %i[github vkontakte]
 
   has_many  :authored_questions, foreign_key: "author_id", class_name: "Question", inverse_of: :author, dependent: :destroy
   has_many  :authored_answers, foreign_key: "author_id", class_name: "Answer", inverse_of: :author, dependent: :destroy
