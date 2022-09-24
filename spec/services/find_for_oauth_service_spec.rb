@@ -37,7 +37,7 @@ RSpec.describe FindForOauthService do
       end
     end
 
-    context 'user does not exist' do
+    context 'user does not exist and receive oauth_provider with email' do
       let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456', info: { email: 'new@user.com' }) }
 
       it 'creates new user' do
@@ -53,7 +53,7 @@ RSpec.describe FindForOauthService do
         expect(user.email).to eq 'new@user.com'
       end
 
-      it 'create oauth_provider for user' do
+      it 'create oauth_provider for user' do 
         user = subject.call
         expect(user.oauth_providers).to_not be_empty
       end
@@ -74,7 +74,7 @@ RSpec.describe FindForOauthService do
       end
 
       it 'returns new user' do
-        expect(subject.call.id).to eq nil
+        expect(subject.call).to be_a_new(User)
       end
     end
   end

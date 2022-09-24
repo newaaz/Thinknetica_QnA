@@ -30,4 +30,7 @@ Rails.application.routes.draw do
   get 'users/:id/awards', to: 'users#awards', as: 'awards_user'
 
   mount ActionCable.server => '/cable'
+
+  # for tests
+  default_url_options :host => "example.com"
 end
