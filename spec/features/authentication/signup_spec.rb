@@ -10,8 +10,7 @@ feature 'User can sign up', %q{
 
   scenario 'Unregistered user tries to sign up' do
     complete_registration
-
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
+    expect(page).to have_content 'A message with a confirmation link has been sent to your email address'
   end
 
   scenario 'Unregistered user tries to sign up with errors' do

@@ -1,7 +1,10 @@
 Rails.application.routes.draw do  
   root to: 'questions#index'
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+
+  get 'new_user', to: 'users#new', as: 'new_user'
+  post 'create_user'  , to: 'users#create', as: 'create_user'
 
   concern :votable do
     member do
@@ -27,4 +30,7 @@ Rails.application.routes.draw do
   get 'users/:id/awards', to: 'users#awards', as: 'awards_user'
 
   mount ActionCable.server => '/cable'
+
+  # for tests
+  default_url_options :host => "example.com"
 end

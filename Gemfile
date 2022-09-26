@@ -37,14 +37,22 @@ group :development, :test do
 end
 
 gem "slim-rails", "~> 3.5"
-gem "devise", "~> 4.8"
 gem "aws-sdk-s3", require: false
 gem "octicons_helper", "~> 17.2"
 gem "cocoon", "~> 1.2"
 gem 'active_storage_validations'
 
-#get your Rails variables in your js
+# get your Rails variables in your js
 gem "gon", "~> 6.4"
+
+# Authentication
+gem "devise", "~> 4.8"
+gem "omniauth", "~> 2.1"
+gem "omniauth-rails_csrf_protection", "~> 1.0"
+gem "omniauth-github", "~> 2.0"
+gem "omniauth-vkontakte", "~> 1.8"
+
+gem "letter_opener", "~> 1.8"
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
@@ -61,6 +69,7 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 3.26'
   gem 'selenium-webdriver', '>= 4.0.0.rc1'
+  gem "capybara-email", "~> 3.0"
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
   gem "shoulda-matchers", "~> 5.1"  
@@ -69,4 +78,8 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+
+
+
 

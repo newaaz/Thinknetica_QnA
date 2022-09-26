@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_06_094156) do
+ActiveRecord::Schema.define(version: 2022_09_21_190835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,16 @@ ActiveRecord::Schema.define(version: 2022_09_06_094156) do
     t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable"
   end
 
+  create_table "oauth_providers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "provider", null: false
+    t.string "uid", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uid", "provider"], name: "index_oauth_providers_on_uid_and_provider", unique: true
+    t.index ["user_id"], name: "index_oauth_providers_on_user_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
@@ -105,6 +115,10 @@ ActiveRecord::Schema.define(version: 2022_09_06_094156) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -127,6 +141,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_094156) do
   add_foreign_key "awards", "questions"
   add_foreign_key "awards", "users"
   add_foreign_key "comments", "users"
+  add_foreign_key "oauth_providers", "users"
   add_foreign_key "questions", "answers", column: "best_answer_id"
   add_foreign_key "questions", "users", column: "author_id"
   add_foreign_key "votes", "users"

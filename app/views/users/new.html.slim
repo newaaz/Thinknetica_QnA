@@ -1,0 +1,10 @@
+h1 Need your email confirmation
+
+= render 'shared/errors', resource: @user
+  
+= form_for @user, url: create_user_path, method: :post do |f|
+  = f.label :email
+  = f.email_field :email, class: 'form-control'
+
+  = f.submit 'Send', class: "btn btn-primary mt-3"
+  

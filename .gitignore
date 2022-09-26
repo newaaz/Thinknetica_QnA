@@ -27,6 +27,7 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/credentials/development.key
 
 # Ignore config/database.yml
 /config/database.yml
@@ -37,3 +38,6 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+
+/config/credentials/test.key
