@@ -19,9 +19,24 @@ class Ability
 
   def user_abilities
     quest_abilities
-    can :create, [Question, Answer, Comment]  
 
-    can %i[update destroy], [Question, Answer, Comment], { author_id: user.id }
+    can :create, [Question, Answer] 
+
+    can %i[update destroy], [Question, Answer], { author_id: user.id }
+    
+    can %i[upvote downvote], [Question, Answer] do |votable|
+      !user.author?(votable)
+    end
+
+    can :create_comment, [Question, Answer]
+
+    can :destroy, Link, linkable: { author_id: user.id }
+
+    can :set_best_answer, Question, { author_id: user.id }
+
+    can :purge, ActiveStorage::Attachment do |file|
+      user.author?(file.record)
+    end
 
   end
 
