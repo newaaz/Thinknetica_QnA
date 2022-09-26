@@ -45,12 +45,13 @@ gem 'active_storage_validations'
 # get your Rails variables in your js
 gem "gon", "~> 6.4"
 
-# Authentication
+# Authentication & authorization
 gem "devise", "~> 4.8"
 gem "omniauth", "~> 2.1"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem "omniauth-github", "~> 2.0"
 gem "omniauth-vkontakte", "~> 1.8"
+gem "cancancan", "~> 3.4"
 
 gem "letter_opener", "~> 1.8"
 
@@ -78,8 +79,4 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-
-
-
 
