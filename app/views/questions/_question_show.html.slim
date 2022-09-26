@@ -36,7 +36,7 @@
 
     = f.submit 'Save changes'
 
-  - if current_user&.author?(@question)
+  - if can? :update, @question
     = link_to "Edit question", "#", class: "edit-question-link"
     = link_to "Cancel", "#", class: "cancel-edit-question-link hidden"
     |&nbsp;|&nbsp;

@@ -20,7 +20,7 @@ class Ability
   def user_abilities
     quest_abilities
 
-    can :create, [Question, Answer] 
+    can :create, [Question, Answer, Comment, Vote] 
 
     can %i[update destroy], [Question, Answer], { author_id: user.id }
     
