@@ -43,30 +43,23 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user.author?(@question)
+    @question.update(question_params)
   end
 
-  def destroy
-    if current_user.author?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'Your question was deleted'
-    else
-      flash[:alert] = 'This is not your question'
-      redirect_back(fallback_location: root_path)      
-    end
+  def destroy   
+    @question.destroy
+    redirect_to questions_path, notice: 'Your question was deleted'
   end
 
-  def set_best_answer
-    if current_user.author?(@question)
-      @best_answer = Answer.find(params[:best_answer_id])
-      @question.update(best_answer: @best_answer)
-      
-      @question.award.update(user: @best_answer.author) if @question.award.present?    
+  def set_best_answer  
+    @best_answer = Answer.find(params[:best_answer_id])
+    @question.update(best_answer: @best_answer)
+    
+    @question.award.update(user: @best_answer.author) if @question.award.present?    
 
-      @answers = @question.answers.where.not(id: @question.best_answer_id)
+    @answers = @question.answers.where.not(id: @question.best_answer_id)
 
-      @voted_resources = voted_resources('Answer') # vouting for answers
-    end
+    @voted_resources = voted_resources('Answer') # vouting for answers   
   end
 
   private
