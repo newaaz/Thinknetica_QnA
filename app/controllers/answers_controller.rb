@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
   before_action :set_question, only: %i[create]
   before_action :set_answer, only: %i[destroy update]
 
+  authorize_resource
+
   after_action  :publish_answer, only: :create
 
   def create
