@@ -6,6 +6,18 @@ Rails.application.routes.draw do
   get 'new_user', to: 'users#new', as: 'new_user'
   post 'create_user'  , to: 'users#create', as: 'create_user'
 
+  use_doorkeeper
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: %i[index]
+    end
+  end
+
   concern :votable do
     member do
       patch :upvote
