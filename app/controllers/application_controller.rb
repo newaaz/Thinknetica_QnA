@@ -5,8 +5,6 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: exception.message
   end
 
-  check_authorization unless :devise_controller?
-
   private 
 
   def set_gon_current_user

@@ -9,7 +9,7 @@
   - if answer.files.attached?
     = render partial: 'answers/attachment', collection: answer.files, as: :file
 
-  - if can? :set_best, @question 
+  - if can? :set_best_answer, @question
     = link_to 'Mark the best',
       set_best_answer_question_path(@question, best_answer_id: answer.id),
       method: :patch,

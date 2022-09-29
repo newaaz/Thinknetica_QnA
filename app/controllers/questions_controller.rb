@@ -5,6 +5,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: %i[show edit update destroy set_best_answer]
 
+  authorize_resource
+
   after_action  :publish_question, only: :create
 
   def index
