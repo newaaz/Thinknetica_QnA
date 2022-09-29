@@ -9,13 +9,13 @@
   - if answer.files.attached?
     = render partial: 'answers/attachment', collection: answer.files, as: :file
 
-  - if current_user&.author?(@question)
+  - if can? :set_best_answer, @question
     = link_to 'Mark the best',
       set_best_answer_question_path(@question, best_answer_id: answer.id),
       method: :patch,
       remote: true      
   
-  - if current_user&.author?(answer)
+  - if can? :update, answer
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true 
     = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = link_to 'Cancel', '#', class: 'cancel-edit-answer-link hidden', data: { answer_id: answer.id }
@@ -43,7 +43,7 @@
     - if answer.comments.any?      
       = render answer.comments
 
-    - if current_user
+    - if can? :create, Comment
       = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
 
     = render 'comments/form', resource: answer

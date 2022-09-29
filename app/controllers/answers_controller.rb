@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
   before_action :set_question, only: %i[create]
   before_action :set_answer, only: %i[destroy update]
 
+  authorize_resource
+
   after_action  :publish_answer, only: :create
 
   def create
@@ -15,14 +17,14 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params) if current_user.author?(@answer)
+    @answer.update(answer_params)
     @question = @answer.question
 
     @voted_resources = voted_resources('Answer') # for the vouting
   end
 
   def destroy    
-    @answer.destroy if current_user.author?(@answer)  
+    @answer.destroy 
   end
 
   private

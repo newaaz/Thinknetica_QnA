@@ -2,7 +2,7 @@
 
   p= link_to question.title, question
 
-  - if current_user&.author?(question)
+  - if can? :destroy, question
     = link_to 'Delete this question', question_path(question), method: :delete, class: 'btn btn-sm btn-outline-danger mb-3'
  
   = render 'votes/vouting', resource: question
