@@ -11,42 +11,57 @@ describe 'Profile API', type: :request do
       let(:api_path)  { '/api/v1/profiles/me' }
     end
      
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access token' do
-        get '/api/v1/profiles/me', headers: headers
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access token is invalid' do
-        get '/api/v1/profiles/me', params: { access_token: '1234' }, headers: headers
-        expect(response.status).to eq 401
-      end
-    end
-  
     context 'authorized' do
       let(:me)            { create(:user) }
       let(:access_token)  { create(:access_token, resource_owner_id: me.id) }
+      let(:user_response) { json['user'] }
 
       before { get '/api/v1/profiles/me', params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'API success response'
 
-      it 'returns all public fields' do
-        %w[id email admin created_at].each do |attr|
-          expect(json[attr]).to eq me.send(attr).as_json
-        end        
-      end
+      it_behaves_like 'API private fields'
 
-      it 'returns all public fields' do
-        %w[password encrypted_password].each do |attr|
-          expect(json).to_not have_key(attr)
-        end        
+      it_behaves_like 'API public fields' do
+        let(:user)  { me }
       end
 
     end
   end
 
+  describe 'GET /api/v1/profiles' do
+    let(:api_path)      { '/api/v1/profiles' }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method)    { :get }      
+    end
+
+    context 'authorized' do
+      let(:users)         { create_list(:user, 3) }
+      let(:owner)         { users.first }
+      let(:access_token)  { create(:access_token, resource_owner_id: owner.id) }
+      let(:user_response) { json['users'][0] }
+
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
+
+      it_behaves_like 'API success response'
+
+      it 'returns list of users without one' do
+        expect(json['users'].size).to eq 2
+      end
+
+      it 'return users except current resource owner' do
+        json['users'].each do |user|
+          expect(user['id']).to_not eq owner.id
+        end
+      end
+
+      it_behaves_like 'API private fields'
+
+      it_behaves_like 'API public fields' do
+        let(:user)  { users.second }
+      end      
+    end
+  end
 end
  
