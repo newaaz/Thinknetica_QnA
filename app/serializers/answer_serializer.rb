@@ -1,7 +1,5 @@
-class QuestionSerializer < ActiveModel::Serializer
-  attributes %i[id author_id title body comments links files created_at updated_at]
-  #has_many :answers
-  #belongs_to :author
+class AnswerSerializer < ActiveModel::Serializer
+  attributes %i[id author_id body comments links files created_at updated_at]
 
   def files
     files = []
