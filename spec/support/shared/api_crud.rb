@@ -1,5 +1,5 @@
 # Links
-shared_examples_for 'API resource links' do
+shared_examples_for 'API resource linkable' do
   it 'returns list of links' do
     expect(resource_response['links'].size).to eq 3
   end
@@ -10,7 +10,7 @@ shared_examples_for 'API resource links' do
 end
 
 # Comments
-shared_examples_for 'API resource comments' do
+shared_examples_for 'API resource commentable' do
   it 'returns list of comments' do
     expect(resource_response['comments'].size).to eq 3
   end
@@ -21,7 +21,7 @@ shared_examples_for 'API resource comments' do
 end
 
 # Attachments
-shared_examples_for 'API resource attachments' do
+shared_examples_for 'API resource attachmentable' do
   it 'returns list of attachmens' do
     expect(resource_response['files'].size).to eq 2
   end
@@ -54,5 +54,51 @@ shared_examples_for 'API private fields' do
     %w[password encrypted_password].each do |attr|
       expect(user_response).to_not have_key(attr)
     end        
+  end
+end
+
+# return erorrs on create/update
+shared_examples_for 'API return errors on create/update' do
+  it 'returns errors' do
+    send_invalid_request
+    #expect(json['errors']['title'][0]).to eq "can't be blank"
+    expect(json['errors']['body'][0]).to eq "can't be blank"
+  end
+end
+
+# status redirect
+shared_examples_for 'API status redirect' do
+  it 'status redirect' do
+    send_request
+    expect(response.status).to eq 302
+  end 
+end
+
+# destroy question/answer
+shared_examples_for 'API deletable' do
+  context 'authorized' do
+    context 'author of resource' do
+      let(:access_token)      { create(:access_token, resource_owner_id: author.id) }
+      
+      it 'deletes the resource in DB' do
+        expect { send_request }.to change(resource.class, :count).by(-1)
+      end
+
+      it 'status no content' do
+        send_request
+        expect(response.status).to eq 204
+      end      
+    end
+
+    context 'non author of question' do
+      let(:non_author)    { create(:user) }
+      let(:access_token)  { create(:access_token, resource_owner_id: non_author.id) }
+
+      it 'does not delete question' do
+        expect { send_request }.to_not change(resource.class, :count)
+      end
+
+      it_behaves_like 'API status redirect'
+    end
   end
 end
