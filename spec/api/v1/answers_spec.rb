@@ -179,5 +179,4 @@ describe 'Answers API', type: :request do
       let(:resource)  { answer }
     end
   end
-end
- 
+end 
