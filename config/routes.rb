@@ -6,6 +6,20 @@ Rails.application.routes.draw do
   get 'new_user', to: 'users#new', as: 'new_user'
   post 'create_user'  , to: 'users#create', as: 'create_user'
 
+  use_doorkeeper
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: %i[index] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: %i[index show create destroy update] do
+        resources :answers, only: %i[index show create destroy update], shallow: true
+      end
+    end
+  end
+
   concern :votable do
     member do
       patch :upvote
@@ -32,5 +46,5 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
 
   # for tests
-  default_url_options :host => "example.com"
+  default_url_options :host => "127.0.0.1:3000"
 end
