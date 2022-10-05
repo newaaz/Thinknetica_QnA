@@ -55,6 +55,13 @@ gem "cancancan", "~> 3.4"
 
 gem "letter_opener", "~> 1.8"
 
+# REST API
+gem "doorkeeper", "~> 5.6"
+gem "active_model_serializers", "~> 0.10.13"
+
+# Optimized json
+gem "oj", "~> 3.13"
+
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 4.1.0'

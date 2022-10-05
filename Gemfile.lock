@@ -39,6 +39,11 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_model_serializers (0.10.13)
+      actionpack (>= 4.1, < 7.1)
+      activemodel (>= 4.1, < 7.1)
+      case_transform (>= 0.2)
+      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     active_storage_validations (0.9.8)
       activejob (>= 5.2.0)
       activemodel (>= 5.2.0)
@@ -103,6 +108,8 @@ GEM
     capybara-email (3.0.2)
       capybara (>= 2.4, < 4.0)
       mail
+    case_transform (0.2)
+      activesupport
     childprocess (4.1.0)
     cocoon (1.2.15)
     concurrent-ruby (1.1.10)
@@ -114,6 +121,8 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
+    doorkeeper (5.6.0)
+      railties (>= 5)
     erubi (1.10.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -145,6 +154,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.1)
+    jsonapi-renderer (0.2.2)
     jwt (2.5.0)
     launchy (2.5.0)
       addressable (~> 2.7)
@@ -192,6 +202,7 @@ GEM
       actionview
       octicons (= 17.4.0)
       railties
+    oj (3.13.21)
     omniauth (2.1.0)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
@@ -372,6 +383,7 @@ PLATFORMS
   x86-mswin32
 
 DEPENDENCIES
+  active_model_serializers (~> 0.10.13)
   active_storage_validations
   aws-sdk-s3
   bootsnap (>= 1.4.4)
@@ -381,6 +393,7 @@ DEPENDENCIES
   capybara-email (~> 3.0)
   cocoon (~> 1.2)
   devise (~> 4.8)
+  doorkeeper (~> 5.6)
   factory_bot_rails (~> 6.2)
   gon (~> 6.4)
   image_processing (~> 1.2)
@@ -389,6 +402,7 @@ DEPENDENCIES
   letter_opener (~> 1.8)
   listen (~> 3.3)
   octicons_helper (~> 17.2)
+  oj (~> 3.13)
   omniauth (~> 2.1)
   omniauth-github (~> 2.0)
   omniauth-rails_csrf_protection (~> 1.0)
