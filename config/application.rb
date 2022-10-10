@@ -19,7 +19,11 @@ module Qna
     config.time_zone = "Moscow"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # ActiveStorage add new files
     config.active_storage.replace_on_assign_to_many = false
+
+    # connect ActiveJob to sidekiq
+    config.active_job.queue_adapter = :sidekiq
 
     config.autoload_paths += [config.root.join('app')]
 

@@ -1,4 +1,12 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do  
+  mount ActionCable.server => '/cable'
+  
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   root to: 'questions#index'
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
@@ -41,9 +49,7 @@ Rails.application.routes.draw do
 
   delete 'attachments/:id/purge', to: 'attachments#purge', as: 'purge_attachment'  
 
-  get 'users/:id/awards', to: 'users#awards', as: 'awards_user'
-
-  mount ActionCable.server => '/cable'
+  get 'users/:id/awards', to: 'users#awards', as: 'awards_user'  
 
   # for tests
   default_url_options :host => "127.0.0.1:3000"

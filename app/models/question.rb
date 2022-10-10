@@ -2,6 +2,8 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
 
+  after_create :calculate_reputation
+
   belongs_to :author, class_name: 'User', inverse_of: :authored_questions
   belongs_to :best_answer, class_name: 'Answer', foreign_key: :best_answer_id, optional: true
   
@@ -15,4 +17,10 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :award, reject_if: :all_blank
   
   validates :title, :body, presence: true
+
+  private
+
+  def calculate_reputation
+    ReputationJob.perform_later(self)
+  end
 end
