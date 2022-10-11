@@ -11,5 +11,4 @@ RSpec.describe DailyDigestJob, type: :job do
     expect(service).to receive(:sent_digest)
     DailyDigestJob.perform_now
   end
-
 end

@@ -14,14 +14,6 @@ RSpec.describe DailyDigestMailer, type: :mailer do
 
     it "renders the body" do
       expect(mail.body.encoded).to match("Questions created yesterday")
-      # expect(mail.body.encoded).to match("Question for the check digest")
-      # expect(mail.body.encoded).to have_link 'Question for the check digest', href: question_url(question)
-      
-    end
-
-    it "assigns @questions.first in view to question" do
-      # expect(assigns(:questions)).to eq question
     end
   end
-
 end

@@ -20,8 +20,7 @@ class Question < ApplicationRecord
   
   validates :title, :body, presence: true
 
-  scope :created_per_day, ->  { select(:id, :title).where(created_at: Time.current.all_day) }
-  #scope :created_per_day, ->  { select(:id, :title).where(created_at: (Time.current.midnight - 1.day)..Time.current.midnight) }
+  scope :created_per_day, ->  { select(:id, :title).where(created_at: (Time.current.midnight - 1.day)..Time.current.midnight) }
 
   private
 
