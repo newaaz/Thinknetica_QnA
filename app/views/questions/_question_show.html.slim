@@ -1,6 +1,11 @@
 .question
   h1= @question.title
 
+  - if can? :subscribe, @question
+    = render 'subscription'
+  - else
+    ' Only authorized users can subscribe
+
   - if @question.award
     h3 = @question.award.title
     = image_tag @question.award.image.variant(resize_to_limit: [100, 100])

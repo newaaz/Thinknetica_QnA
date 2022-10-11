@@ -3,7 +3,7 @@ class QuestionsController < ApplicationController
   include Commented
   
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_question, only: %i[show edit update destroy set_best_answer]
+  before_action :set_question, only: %i[show edit update destroy set_best_answer subscribe]
 
   authorize_resource
 
@@ -35,6 +35,7 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.authored_questions.build(question_params)
     if @question.save
+      @question.subscribers << current_user
       redirect_to @question, notice: 'Your question successfully created'
     else
       render :new
@@ -62,6 +63,16 @@ class QuestionsController < ApplicationController
     @answers = @question.answers.where.not(id: @question.best_answer_id)
 
     @voted_resources = voted_resources('Answer') # vouting for answers   
+  end
+
+  def subscribe
+    if current_user.subscribed_questions.include?(@question)
+      current_user.subscribed_questions.delete(@question)
+      redirect_to @question, notice: 'You unsubscribed from this question'
+    else
+      current_user.subscribed_questions << @question
+      redirect_to @question, notice: 'You subscribed to this question'
+    end
   end
 
   private

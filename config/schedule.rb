@@ -19,6 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.day, at: '7:30 am' do
+every 1.day, at: '00:30 am' do
   runner "DailyDigestJob.perform_now"
 end

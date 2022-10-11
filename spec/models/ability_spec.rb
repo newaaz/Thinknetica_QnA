@@ -59,6 +59,10 @@ describe Ability do
       it { should be_able_to :purge, question.files.last}
       it { should_not be_able_to :purge, other_question.files.last}
     end
+
+    context 'subscriptions' do
+      it { should be_able_to :subscribe, Question }
+    end
   end
 
   describe 'for quest' do

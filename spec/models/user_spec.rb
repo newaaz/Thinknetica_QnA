@@ -5,7 +5,7 @@ RSpec.describe User, type: :model do
     it { should have_many(:awards) } 
     it { should have_many(:votes).dependent(:destroy) }
     it { should have_many(:oauth_providers).dependent(:destroy) }
-
+    it { should have_and_belong_to_many(:subscribed_questions).class_name('Question') }
   end
 
   describe 'validations' do

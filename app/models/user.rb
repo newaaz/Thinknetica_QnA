@@ -7,6 +7,8 @@ class User < ApplicationRecord
           :confirmable,
           :omniauthable, omniauth_providers: %i[github vkontakte]
 
+  has_and_belongs_to_many :subscribed_questions, class_name: "Question"
+
   has_many  :authored_questions, foreign_key: "author_id", class_name: "Question", inverse_of: :author, dependent: :destroy
   has_many  :authored_answers, foreign_key: "author_id", class_name: "Answer", inverse_of: :author, dependent: :destroy
   has_many  :awards

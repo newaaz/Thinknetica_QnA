@@ -75,6 +75,11 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:question)
       end
+
+      it 'add subscribe to question' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(author.subscribed_questions.count).to eq 1
+      end
     end
 
     context 'with invalid attributes' do
@@ -203,6 +208,33 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'deletes the question' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+    end
+  end
+
+  describe 'POST #subscribe' do
+    context 'authenticated user' do
+      let(:question)  { create(:question) }
+      let(:user)      { create(:user) }
+
+      context 'unsubscribed user subscribe on question' do
+        it 'add question to user subscribes' do
+          login user
+          post :subscribe, params: { id: question.id }
+          user.reload
+          expect(user.subscribed_questions.last).to eq question
+        end
+      end
+
+      context 'subscribed user subscribe on question again' do
+        before { user.subscribed_questions << question }
+
+        it 'add question to user subscribes' do
+          login user
+          post :subscribe, params: { id: question.id }
+          user.reload
+          expect(user.subscribed_questions.count).to eq 0
+        end
       end
     end
   end

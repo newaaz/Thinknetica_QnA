@@ -1,0 +1,6 @@
+.subscription
+  - if current_user.subscribed_questions.include?(@question)
+    ' You subscribed to this question
+    = button_to 'Unsubscribe', subscribe_question_path(@question), class: 'btn btn-outline-primary btn-sm'  
+  - else
+    = button_to 'Subscribe', subscribe_question_path(@question), class: 'btn btn-primary btn-sm'

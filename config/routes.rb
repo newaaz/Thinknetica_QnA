@@ -7,14 +7,14 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  root to: 'questions#index'
+  use_doorkeeper
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
-  get 'new_user', to: 'users#new', as: 'new_user'
-  post 'create_user'  , to: 'users#create', as: 'create_user'
+  root to: 'questions#index'  
 
-  use_doorkeeper
+  get 'new_user', to: 'users#new', as: 'new_user'
+  post 'create_user'  , to: 'users#create', as: 'create_user'  
 
   namespace :api do
     namespace :v1 do
@@ -41,8 +41,8 @@ Rails.application.routes.draw do
 
   resources :questions, concerns: %i[votable commentable] do
     resources :answers, concerns: %i[votable commentable], only: %i[create destroy update], shallow: true
-    
-    patch :set_best_answer, on: :member    
+    patch :set_best_answer, on: :member
+    post  :subscribe, on: :member
   end
 
   resources :links, only: :destroy

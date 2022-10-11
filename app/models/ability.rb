@@ -38,6 +38,7 @@ class Ability
       user.author?(file.record)
     end
 
+    can :subscribe, Question
   end
 
   def quest_abilities
