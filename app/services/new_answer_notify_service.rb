@@ -1,5 +1,5 @@
 class NewAnswerNotifyService
-  def self.send_notify(answer)
+  def send_notify(answer)
     subscribers = answer.question.subscribers
 
     subscribers.find_each(batch_size: 500) do |subscriber|
