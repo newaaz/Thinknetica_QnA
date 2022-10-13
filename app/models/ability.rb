@@ -38,7 +38,7 @@ class Ability
       user.author?(file.record)
     end
 
-    can :subscribe, Question
+    can %i[create destroy], Subscription
   end
 
   def quest_abilities

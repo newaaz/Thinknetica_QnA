@@ -65,16 +65,6 @@ class QuestionsController < ApplicationController
     @voted_resources = voted_resources('Answer') # vouting for answers   
   end
 
-  def subscribe
-    if current_user.subscribed_questions.include?(@question)
-      current_user.subscribed_questions.delete(@question)
-      redirect_to @question, notice: 'You unsubscribed from this question'
-    else
-      current_user.subscribed_questions << @question
-      redirect_to @question, notice: 'You subscribed to this question'
-    end
-  end
-
   private
 
   def publish_question

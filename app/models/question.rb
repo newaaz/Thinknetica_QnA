@@ -7,11 +7,11 @@ class Question < ApplicationRecord
   belongs_to :author, class_name: 'User', inverse_of: :authored_questions
   belongs_to :best_answer, class_name: 'Answer', foreign_key: :best_answer_id, optional: true
 
-  has_and_belongs_to_many :subscribers, class_name: "User"
-  
+  has_one :award, dependent: :destroy
   has_many :answers, dependent: :destroy
   has_many :links, as: :linkable, dependent: :destroy
-  has_one :award, dependent: :destroy
+  has_many  :subscriptions
+  has_many  :subscribers, through: :subscriptions, source: :user, dependent: :destroy  
 
   has_many_attached  :files
 

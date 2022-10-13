@@ -2,9 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Question, type: :model do
   describe 'associations' do
-    it { should have_many(:answers).dependent(:destroy) }  
     it { should have_one(:award).dependent(:destroy) }
-    it { should have_and_belong_to_many(:subscribers).class_name('User') }
+    it { should have_many(:answers).dependent(:destroy) }    
+    it { should have_many(:subscriptions) }
+    it { should have_many(:subscribers).through(:subscriptions).source(:user).dependent(:destroy) }
 
     it { should accept_nested_attributes_for :award }
 

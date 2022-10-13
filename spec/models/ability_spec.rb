@@ -61,7 +61,8 @@ describe Ability do
     end
 
     context 'subscriptions' do
-      it { should be_able_to :subscribe, Question }
+      it { should be_able_to :create, Subscription }
+      it { should be_able_to :destroy, Subscription }
     end
   end
 
