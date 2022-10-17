@@ -67,6 +67,10 @@ gem "sidekiq", "~> 6.5"
 gem 'sinatra', require: false
 gem "whenever", "~> 1.0", require: false
 
+# search with sphinx
+gem "mysql2", "~> 0.5.4"
+gem "thinking-sphinx", "~> 5.4"
+
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 4.1.0'

@@ -28,6 +28,11 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 /config/credentials/development.key
+/config/credentials/test.key
+
+# Ignore Sphinx search conf
+/config/*.sphinx.conf
+/db/sphinx
 
 # Ignore config/database.yml
 /config/database.yml
@@ -40,4 +45,4 @@ yarn-debug.log*
 .yarn-integrity
 
 
-/config/credentials/test.key
+
