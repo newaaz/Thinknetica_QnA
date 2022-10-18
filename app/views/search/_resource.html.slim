@@ -1,0 +1,19 @@
+-if resource.is_a?(Question)
+  b Question: 
+  = link_to resource.title, question_path(resource)
+  br
+- elsif resource.is_a?(Answer)
+  b Answer: 
+  p
+    = resource.body
+    br
+    b In question: 
+    = link_to resource.question.title, question_path(resource.question)
+- elsif resource.is_a?(Comment)
+  b = "Comment on #{resource.commentable_type}"
+  p
+    = resource.body
+- elsif resource.is_a?(User)
+  b User: 
+  = resource.email
+  

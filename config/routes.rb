@@ -9,12 +9,11 @@ Rails.application.routes.draw do
 
   use_doorkeeper
 
-  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
-
   root to: 'questions#index'  
 
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
   get 'new_user', to: 'users#new', as: 'new_user'
-  post 'create_user'  , to: 'users#create', as: 'create_user'  
+  post 'create_user'  , to: 'users#create', as: 'create_user' 
 
   namespace :api do
     namespace :v1 do
@@ -47,9 +46,14 @@ Rails.application.routes.draw do
 
   resources :links, only: :destroy
 
+  # delete attacments
   delete 'attachments/:id/purge', to: 'attachments#purge', as: 'purge_attachment'  
 
-  get 'users/:id/awards', to: 'users#awards', as: 'awards_user'  
+  # show users awards
+  get 'users/:id/awards', to: 'users#awards', as: 'awards_user'
+
+  # search
+  post 'search', to: 'search#search'
 
   # for tests
   default_url_options :host => "127.0.0.1:3000"

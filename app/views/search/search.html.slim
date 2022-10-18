@@ -1,0 +1,9 @@
+- if @result.empty?
+  h2 Nothing found for your request
+- elsif @result.first.is_a?(Array)
+  - @result.each do |result|
+    - result.each do |resource|
+      = render partial: 'resource', locals: { resource: resource }
+- else
+  - @result.each do |resource|
+    = render partial: 'resource', locals: { resource: resource }

@@ -9,7 +9,21 @@
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-      <div class="offcanvas-body">      
+      <div class="offcanvas-body">  
+
+        <%= form_with url: search_path, class: 'search-form row' do |form| %>
+          <div class="col-auto">
+            <%= form.text_field :search_query, class: 'form-control', placeholder: 'Search...' %>
+          </div>
+          <div class="col-auto">
+            <%= form.select :resources, ["All", "Question", "Answer", "Comment", "User"],
+                                        { selected: 'All' }, { class: 'form-select', multiple: true } %>
+          </div>
+          <div class="col-auto">
+            <%= form.submit "Search", class: 'btn btn-secondary' %>
+          </div>
+        <% end %>
+
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
