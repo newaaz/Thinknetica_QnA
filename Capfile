@@ -10,7 +10,10 @@ require "capistrano/deploy"
 #require "capistrano/rvm"
 require "capistrano/rbenv"
 require "capistrano/bundler"
-require "capistrano/passenger"
+
+#require "capistrano/passenger"
+require "capistrano3/unicorn"
+
 require "capistrano/rails"
 
 require 'capistrano/sidekiq'

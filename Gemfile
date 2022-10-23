@@ -71,6 +71,9 @@ gem "whenever", "~> 1.0", require: false
 gem "mysql2", "~> 0.5.4"
 gem "thinking-sphinx", "~> 5.4"
 
+# Deploy
+gem "unicorn", "~> 6.1"
+
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 4.1.0'
@@ -85,9 +88,10 @@ group :development do
   gem 'capistrano', '~> 3.11', require: false  
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-passenger', '~> 0.2.0', require: false
-  gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.4', require: false
+  gem "capistrano3-unicorn", "~> 0.2.1", require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.4', require: false
   #gem 'capistrano-rvm', require: false
 end
 
@@ -105,4 +109,8 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+
+
+
 

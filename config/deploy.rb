@@ -15,6 +15,9 @@ set :deploy_user, 'deployer'
 # for Sidekiq
 set :pty, false
 
+#for unicorn from thk
+after 'deploy:publishing', 'unicorn:restart'
+
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
 
