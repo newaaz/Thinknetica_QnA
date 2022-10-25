@@ -5,7 +5,7 @@
 
 server "188.127.224.194", user: "deployer", roles: %w{app db web}, primary: true
 
-#set :rails_env, :production
+set :rails_env, :production
 
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
@@ -47,7 +47,7 @@ server "188.127.224.194", user: "deployer", roles: %w{app db web}, primary: true
   set :ssh_options, {
     keys: %w(/home/aaz/.ssh/id_rsa),
     forward_agent: true,
-    auth_methods: %w(password),
+    auth_methods: %w(publickey password),
     port: 2013
   }
 

@@ -6,15 +6,19 @@ require "capistrano/setup"
 
 # Include default deployment tasks
 require "capistrano/deploy"
-
-#require "capistrano/rvm"
-require "capistrano/rbenv"
 require "capistrano/bundler"
-
-#require "capistrano/passenger"
-require "capistrano3/unicorn"
-
 require "capistrano/rails"
+
+
+# Ruby version manager
+require "capistrano/rvm"
+#require "capistrano/rbenv"
+
+# Backend server
+require "capistrano/passenger"
+#require "capistrano3/unicorn"
+
+
 
 require 'capistrano/sidekiq'
 install_plugin Capistrano::Sidekiq

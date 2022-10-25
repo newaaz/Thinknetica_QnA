@@ -16,7 +16,7 @@ set :deploy_user, 'deployer'
 set :pty, false
 
 #for unicorn from thk
-after 'deploy:publishing', 'unicorn:restart'
+#after 'deploy:publishing', 'unicorn:restart'
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
@@ -29,7 +29,7 @@ after 'deploy:publishing', 'unicorn:restart'
 # set :pty, true
 
 # Default value for :linked_files is []
-# append :linked_files, "config/database.yml", 'config/master.key'
+append :linked_files, "config/database.yml", 'config/master.key'
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage"
