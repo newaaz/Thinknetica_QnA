@@ -15,8 +15,8 @@ require "capistrano/rvm"
 #require "capistrano/rbenv"
 
 # Backend server
-require "capistrano/passenger"
-#require "capistrano3/unicorn"
+#require "capistrano/passenger"
+require "capistrano3/unicorn"
 
 
 
