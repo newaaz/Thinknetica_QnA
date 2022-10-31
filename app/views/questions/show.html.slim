@@ -1,25 +1,73 @@
-= render 'questions/question_show'
+- cache @question do
+  .question
+    h1= @question.title
 
-= content_tag(:div, id: dom_id(@question))
-  h3 Question comments
-  .comments    
-    - if @question.comments.any?      
-      = render @question.comments
-    
-    - if current_user
-      = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
+    - if can? :create, Subscription
+      = render 'subscription'
+    - else
+      ' Only authorized users can subscribe
+
+    - if @question.award
+      h3 = @question.award.title
+      = image_tag @question.award.image.variant(resize_to_limit: [100, 100]) 
+
+    p= @question.body
+
+    - if @question.links.any?
+      .question-links.bg-white.border.shadow.shadow-sm.p-3.rounded.mb-3
+        = render @question.links
+
+    - if @question.files.attached?
+      = render partial: 'attachment', collection: @question.files, as: :file
         
-    = render 'comments/form', resource: @question
+    = form_with model: @question, local: false, class: "hidden", id: "edit-question" do |f|
+      p
+        = f.label :title
+        = f.text_field :title
+      p
+        = f.label :body
+        = f.text_area :body
+      p
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
 
-.best-answer  
-  - if @best_answer.present?
-    h3 BEST ANSWER
-    = @best_answer.body
+      p Links:
+      #links
+        = f.fields_for :links do |link|
+          = render 'links/link_fields', f: link
+        .links.mt-2
+          = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
 
-h2 Answers
-.answers
-  - if @question.answers.any?    
-    = render partial: 'answers/answer', collection: @answers, as: :answer
+
+      = f.submit 'Save changes'
+
+    - if can? :update, @question
+      = link_to "Edit question", "#", class: "edit-question-link"
+      = link_to "Cancel", "#", class: "cancel-edit-question-link hidden"
+      |&nbsp;|&nbsp;
+      = link_to 'Delete this question', question_path(@question), method: :delete
+
+
+  = content_tag(:div, id: dom_id(@question))
+    h3 Question comments
+    .comments    
+      - if @question.comments.any?      
+        = render @question.comments
+      
+      - if current_user
+        = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
+          
+      = render 'comments/form', resource: @question
+
+  .best-answer  
+    - if @best_answer.present?
+      h3 BEST ANSWER
+      = @best_answer.body
+
+  h2 Answers
+  .answers
+    - if @question.answers.any?    
+      = render partial: 'answers/answer', collection: @answers, as: :answer
 
 .answer-form
   = render 'answers/form'
