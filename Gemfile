@@ -41,6 +41,7 @@ gem "aws-sdk-s3", require: false
 gem "octicons_helper", "~> 17.2"
 gem "cocoon", "~> 1.2"
 gem 'active_storage_validations'
+gem "redis-rails", "~> 5.0"
 
 # get your Rails variables in your js
 gem "gon", "~> 6.4"
@@ -109,8 +110,3 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-
-
-
-

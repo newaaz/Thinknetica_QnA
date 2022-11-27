@@ -1,50 +1,51 @@
-= content_tag(:div, id: dom_id(answer), class: "answer bg-white border shadow shadow-sm p-3 rounded mb-3")
-  
-  p= answer.body
+- cache answer do
+  = content_tag(:div, id: dom_id(answer), class: "answer bg-white border shadow shadow-sm p-3 rounded mb-3")
+    
+    p= answer.body
 
-  - if answer.links.any?
-    .answer-links.bg-white.border.shadow.shadow-sm.p-3.rounded.mb-3
-      = render answer.links
+    - if answer.links.any?
+      .answer-links.bg-white.border.shadow.shadow-sm.p-3.rounded.mb-3
+        = render answer.links
 
-  - if answer.files.attached?
-    = render partial: 'answers/attachment', collection: answer.files, as: :file
+    - if answer.files.attached?
+      = render partial: 'answers/attachment', collection: answer.files, as: :file
 
-  - if can? :set_best_answer, @question
-    = link_to 'Mark the best',
-      set_best_answer_question_path(@question, best_answer_id: answer.id),
-      method: :patch,
-      remote: true      
-  
-  - if can? :update, answer
-    = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true 
-    = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-    = link_to 'Cancel', '#', class: 'cancel-edit-answer-link hidden', data: { answer_id: answer.id }
+    - if can? :set_best_answer, @question
+      = link_to 'Mark the best',
+        set_best_answer_question_path(@question, best_answer_id: answer.id),
+        method: :patch,
+        remote: true      
+    
+    - if can? :update, answer
+      = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true 
+      = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      = link_to 'Cancel', '#', class: 'cancel-edit-answer-link hidden', data: { answer_id: answer.id }
 
-    = form_with model: answer, local: false, class: "hidden", id: "edit-answer-#{answer.id}" do |f|
-      = f.label :body, 'Your answer'
-      = f.text_area :body
+      = form_with model: answer, local: false, class: "hidden", id: "edit-answer-#{answer.id}" do |f|
+        = f.label :body, 'Your answer'
+        = f.text_area :body
 
-      = f.label :files
-      = f.file_field :files, multiple: true, direct_upload: true
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
 
-      p Links:
-      #links
-        = f.fields_for :links do |link|
-          = render 'links/link_fields', f: link
-        .links.mt-2
-          = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
-      
-      = f.submit 'Update answer'
+        p Links:
+        #links
+          = f.fields_for :links do |link|
+            = render 'links/link_fields', f: link
+          .links.mt-2
+            = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
+        
+        = f.submit 'Update answer'
 
-  = render 'votes/vouting', resource: answer  
+    = render 'votes/vouting', resource: answer  
 
-  h4.ms-5 This answer comments:
-  .comments
-    - if answer.comments.any?      
-      = render answer.comments
+    h4.ms-5 This answer comments:
+    .comments
+      - if answer.comments.any?      
+        = render answer.comments
 
-    - if can? :create, Comment
-      = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
+      - if can? :create, Comment
+        = link_to 'New comment', '#', class: 'comment-btn btn btn-outline-success btn-sm'
 
-    = render 'comments/form', resource: answer
+      = render 'comments/form', resource: answer
 
